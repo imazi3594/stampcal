@@ -4,16 +4,22 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>郵票組合計數機</title>
+  <!-- Browser Favicon -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect x=%225%22 y=%225%22 width=%2290%22 height=%2290%22 rx=%225%22 fill=%22%233b82f6%22/><path d=%22M25 40 L50 60 L75 40%22 fill=%22none%22 stroke=%22white%22 stroke-width=%228%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22/><rect x=%2220%22 y=%2230%22 width=%2260%22 height=%2245%22 fill=%22none%22 stroke=%22white%22 stroke-width=%225%22 rx=%223%22/><circle cx=%220%22 cy=%220%22 r=%226%22 fill=%22%23f8fafc%22 transform=%22translate(50, 5)%22/><circle cx=%220%22 cy=%220%22 r=%226%22 fill=%22%23f8fafc%22 transform=%22translate(50, 95)%22/><circle cx=%220%22 cy=%220%22 r=%226%22 fill=%22%23f8fafc%22 transform=%22translate(5, 50)%22/><circle cx=%220%22 cy=%220%22 r=%226%22 fill=%22%23f8fafc%22 transform=%22translate(95, 50)%22/></svg>">
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
   <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Noto+Sans+HK:wght@400;700;900&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+    }
+  </script>
   <style>
     body {
       font-family: 'Inter', 'Noto Sans HK', sans-serif;
       touch-action: manipulation;
-      background-color: #f8fafc;
     }
     .custom-scrollbar::-webkit-scrollbar {
       width: 4px;
@@ -24,6 +30,9 @@
     .custom-scrollbar::-webkit-scrollbar-thumb {
       background: #e2e8f0;
       border-radius: 10px;
+    }
+    .dark .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: #475569;
     }
     button {
       touch-action: manipulation;
@@ -38,34 +47,50 @@
   </style>
 <link rel="stylesheet" href="/index.css">
 </head>
-<body class="bg-slate-50">
+<body class="bg-slate-50 dark:bg-slate-900">
   <div id="root"></div>
 
   <script type="text/babel">
     const { useState, useMemo, useEffect } = React;
 
     const DENOMINATIONS = [
-      { id: 'd1', value: 0.1, label: '$0.1', color: 'bg-slate-100' },
-      { id: 'd2', value: 0.2, label: '$0.2', color: 'bg-slate-200' },
-      { id: 'd3', value: 0.5, label: '$0.5', color: 'bg-amber-100' },
-      { id: 'd4', value: 1.0, label: '$1.0', color: 'bg-emerald-100' },
-      { id: 'd5', value: 2.0, label: '$2.0', color: 'bg-blue-100' },
-      { id: 'd6', value: 2.2, label: '$2.2', color: 'bg-indigo-100' },
-      { id: 'd7', value: 2.8, label: '$2.8', color: 'bg-purple-100' },
-      { id: 'd8', value: 3.7, label: '$3.7', color: 'bg-pink-100' },
-      { id: 'd9', value: 4.0, label: '$4.0', color: 'bg-rose-100' },
-      { id: 'd10', value: 5.0, label: '$5.0', color: 'bg-red-100' },
-      { id: 'd11', value: 5.4, label: '$5.4', color: 'bg-orange-100' },
-      { id: 'd12', value: 5.5, label: '$5.5', color: 'bg-yellow-100' },
-      { id: 'd13', value: 10.0, label: '$10', color: 'bg-yellow-200' },
-      { id: 'd14', value: 15.5, label: '$15.5', color: 'bg-lime-100' },
-      { id: 'd15', value: 20.0, label: '$20', color: 'bg-lime-200' },
-      { id: 'd16', value: 50.0, label: '$50', color: 'bg-cyan-200' },
+      { id: 'd1', value: 0.1, label: '$0.1', color: 'bg-slate-100 dark:bg-slate-700' },
+      { id: 'd2', value: 0.2, label: '$0.2', color: 'bg-slate-200 dark:bg-slate-600' },
+      { id: 'd3', value: 0.5, label: '$0.5', color: 'bg-amber-100 dark:bg-amber-900/40' },
+      { id: 'd4', value: 1.0, label: '$1.0', color: 'bg-emerald-100 dark:bg-emerald-900/40' },
+      { id: 'd5', value: 2.0, label: '$2.0', color: 'bg-blue-100 dark:bg-blue-900/40' },
+      { id: 'd6', value: 2.2, label: '$2.2', color: 'bg-indigo-100 dark:bg-indigo-900/40' },
+      { id: 'd7', value: 2.8, label: '$2.8', color: 'bg-purple-100 dark:bg-purple-900/40' },
+      { id: 'd8', value: 3.7, label: '$3.7', color: 'bg-pink-100 dark:bg-pink-900/40' },
+      { id: 'd9', value: 4.0, label: '$4.0', color: 'bg-rose-100 dark:bg-rose-900/40' },
+      { id: 'd10', value: 5.0, label: '$5.0', color: 'bg-violet-200 dark:bg-violet-900/40' }, 
+      { id: 'd11', value: 5.4, label: '$5.4', color: 'bg-orange-100 dark:bg-orange-900/40' },
+      { id: 'd12', value: 5.5, label: '$5.5', color: 'bg-yellow-100 dark:bg-yellow-900/40' },
+      { id: 'd13', value: 10.0, label: '$10', color: 'bg-yellow-200 dark:bg-yellow-800/40' },
+      { id: 'd14', value: 15.5, label: '$15.5', color: 'bg-lime-100 dark:bg-lime-900/40' },
+      { id: 'd15', value: 20.0, label: '$20', color: 'bg-lime-200 dark:bg-lime-800/40' },
+      { id: 'd16', value: 50.0, label: '$50', color: 'bg-cyan-200 dark:bg-cyan-800/40' },
     ];
+
+    const StampIcon = ({ className = "w-5 h-5" }) => (
+      <svg className={className} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M21 8V16C21 18.7614 18.7614 21 16 21H8C5.23858 21 3 18.7614 3 16V8C3 5.23858 5.23858 3 8 3H16C18.7614 3 21 5.23858 21 8Z" fill="#3B82F6"/>
+        <path d="M7 9L12 12.5L17 9" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+        <rect x="6" y="8" width="12" height="8" rx="1" stroke="white" strokeWidth="1.5"/>
+        <circle cx="12" cy="3" r="1.5" className="fill-slate-50 dark:fill-slate-900"/>
+        <circle cx="12" cy="21" r="1.5" className="fill-slate-50 dark:fill-slate-900"/>
+        <circle cx="3" cy="12" r="1.5" className="fill-slate-50 dark:fill-slate-900"/>
+        <circle cx="21" cy="12" r="1.5" className="fill-slate-50 dark:fill-slate-900"/>
+      </svg>
+    );
 
     function App() {
       const [targetPostage, setTargetPostage] = useState('');
       const [activeTab, setActiveTab] = useState('calc');
+      const [isDarkMode, setIsDarkMode] = useState(() => {
+        const saved = localStorage.getItem('theme');
+        return saved === 'dark';
+      });
       const [priority, setPriority] = useState(() => {
         const saved = localStorage.getItem('calc_priority');
         return saved || 'stamps';
@@ -74,6 +99,16 @@
         const saved = localStorage.getItem('disabled_stamps');
         return saved ? JSON.parse(saved) : [];
       });
+
+      useEffect(() => {
+        if (isDarkMode) {
+          document.documentElement.classList.add('dark');
+          localStorage.setItem('theme', 'dark');
+        } else {
+          document.documentElement.classList.remove('dark');
+          localStorage.setItem('theme', 'light');
+        }
+      }, [isDarkMode]);
 
       useEffect(() => {
         localStorage.setItem('disabled_stamps', JSON.stringify(disabledStamps));
@@ -192,30 +227,43 @@
             
             {activeTab === 'calc' ? (
               <>
-                <div className="bg-white rounded-2xl p-4 shadow-sm border border-slate-200 flex flex-col shrink-0">
-                  <div className="flex items-center justify-between mb-3 border-b border-slate-50 pb-2">
+                <div className="bg-white dark:bg-slate-800 rounded-2xl p-4 shadow-sm border border-slate-200 dark:border-slate-700 flex flex-col shrink-0">
+                  <div className="flex items-center justify-between mb-3 border-b border-slate-50 dark:border-slate-700 pb-2">
                     <div className="flex items-center gap-2">
-                      <div className="w-1 h-5 bg-blue-500 rounded-full"></div>
-                      <h2 className="text-lg font-black text-slate-800 tracking-tight">郵費組合計算機</h2>
+                      <StampIcon />
+                      <h2 className="text-lg font-black text-slate-800 dark:text-slate-100 tracking-tight">郵費組合計算機</h2>
                     </div>
-                    <button 
-                      onClick={() => setActiveTab('settings')}
-                      className="p-1.5 text-slate-400 active:text-blue-500 active:scale-95 transition-all"
-                      aria-label="Settings"
-                    >
-                      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>
-                    </button>
+                    <div className="flex items-center gap-1">
+                      <button 
+                        onClick={() => setIsDarkMode(!isDarkMode)}
+                        className="p-1.5 text-slate-400 dark:text-slate-500 active:text-blue-500 active:scale-95 transition-all"
+                        aria-label="Toggle Theme"
+                      >
+                        {isDarkMode ? (
+                          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>
+                        ) : (
+                          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+                        )}
+                      </button>
+                      <button 
+                        onClick={() => setActiveTab('settings')}
+                        className="p-1.5 text-slate-400 dark:text-slate-500 active:text-blue-500 active:scale-95 transition-all"
+                        aria-label="Settings"
+                      >
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>
+                      </button>
+                    </div>
                   </div>
                   
                   <div className="flex flex-col items-center justify-center">
-                    <h1 className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">目標郵費 (最高 $9999.9)</h1>
-                    <div className="text-4xl font-black text-slate-900 flex items-center gap-1">
-                      <span className="text-slate-300 text-2xl">$</span>
+                    <h1 className="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-1">目標郵費 (最高 $9999.9)</h1>
+                    <div className="text-4xl font-black text-slate-900 dark:text-white flex items-center gap-1">
+                      <span className="text-slate-300 dark:text-slate-600 text-2xl">$</span>
                       <span>{targetPostage || '0'}</span>
                       <span className="w-0.5 h-8 bg-blue-500 animate-pulse rounded-full ml-1"></span>
                     </div>
                     {priority === 'varieties' && (
-                      <div className="mt-1 px-2 py-0.5 bg-indigo-50 text-[10px] font-bold text-indigo-500 rounded-full uppercase tracking-tighter">
+                      <div className="mt-1 px-2 py-0.5 bg-indigo-50 dark:bg-indigo-900/40 text-[10px] font-bold text-indigo-500 dark:text-indigo-400 rounded-full uppercase tracking-tighter">
                         款數優先模式
                       </div>
                     )}
@@ -223,15 +271,15 @@
                 </div>
 
                 <div className="shrink-0 flex flex-col space-y-2">
-                  <div className="h-[175px] w-full">
+                  <div className="h-[185px] w-full">
                     {bestCombination ? (
-                      <div className="bg-white rounded-2xl p-3 shadow-md border-2 border-blue-500 flex flex-col h-full transition-all duration-300">
-                        <div className="flex items-center justify-between mb-2 pb-2 border-b border-slate-100 shrink-0">
-                          <h2 className="text-[11px] font-black text-slate-800 uppercase tracking-wider">最佳方案 ({bestCombination.totalCount} 枚, {bestCombination.varietyCount} 款)</h2>
-                          <button onClick={() => handleKeyPress('C')} className="text-[11px] font-black text-red-500 bg-red-50 px-3 py-1 rounded-lg uppercase active:bg-red-100 transition-colors">清除</button>
+                      <div className="bg-white dark:bg-slate-800 rounded-2xl p-4 shadow-md border-2 border-blue-500 flex flex-col h-full transition-all duration-300">
+                        <div className="flex items-center justify-between mb-1 pb-1 border-b border-slate-100 dark:border-slate-700 shrink-0">
+                          <h2 className="text-[11px] font-black text-slate-800 dark:text-slate-200 uppercase tracking-wider">最佳方案 ({bestCombination.totalCount} 枚, {bestCombination.varietyCount} 款)</h2>
+                          <button onClick={() => handleKeyPress('C')} className="text-[11px] font-black text-red-500 dark:text-red-400 bg-red-50 dark:bg-red-900/20 px-2 py-0.5 rounded-lg uppercase active:bg-red-100 transition-colors">清除</button>
                         </div>
-                        <div className="flex-1 overflow-y-auto">
-                          <div className="grid grid-cols-3 gap-2 pr-1 custom-scrollbar">
+                        <div className="flex-1 overflow-y-auto custom-scrollbar">
+                          <div className="grid grid-cols-3 gap-y-4 gap-x-1 py-3">
                             {Object.entries(bestCombination.stamps).sort((a,b) => {
                                const valA = DENOMINATIONS.find(d => d.id === a[0])?.value || 0;
                                const valB = DENOMINATIONS.find(d => d.id === b[0])?.value || 0;
@@ -239,13 +287,15 @@
                             }).map(([id, count]) => {
                               const denom = DENOMINATIONS.find(d => d.id === id);
                               return (
-                                <div key={id} className="flex items-center justify-center gap-1.5 py-2 px-1.5 bg-slate-50 rounded-lg border border-slate-100">
-                                  <div className={`w-9 h-9 shrink-0 rounded-md ${denom?.color} border border-slate-200 flex items-center justify-center text-[9px] font-black text-black shadow-sm`}>
-                                    {denom?.label}
-                                  </div>
-                                  <div className="flex items-center gap-0.5">
-                                    <span className="text-slate-400 text-[10px] font-bold">×</span>
-                                    <span className="text-base font-black text-blue-600">{count}</span>
+                                <div key={id} className="flex flex-col items-center">
+                                  <div className="flex items-center gap-1">
+                                    <div className={`${denom?.color} px-1.5 py-1 rounded-lg text-lg font-black text-black dark:text-slate-100 shadow-sm border border-black/5 dark:border-white/5`}>
+                                      {denom?.label}
+                                    </div>
+                                    <div className="flex items-center">
+                                      <span className="text-blue-400 dark:text-blue-500 text-xs font-black mr-0.5">×</span>
+                                      <span className="text-2xl font-black text-blue-600 dark:text-blue-400 leading-none">{count}</span>
+                                    </div>
                                   </div>
                                 </div>
                               );
@@ -254,7 +304,7 @@
                         </div>
                       </div>
                     ) : (
-                      <div className="h-full bg-slate-100/50 border-2 border-dashed border-slate-200 rounded-2xl flex flex-col items-center justify-center text-slate-400 p-6 space-y-2">
+                      <div className="h-full bg-slate-100/50 dark:bg-slate-800/40 border-2 border-dashed border-slate-200 dark:border-slate-700 rounded-2xl flex flex-col items-center justify-center text-slate-400 dark:text-slate-600 p-6 space-y-2">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="opacity-20"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/></svg>
                         <span className="text-[10px] uppercase font-black tracking-widest text-center">
                           {targetPostage && parseFloat(targetPostage) > 0 ? "無可用組合" : "請輸入金額"}
@@ -265,11 +315,11 @@
 
                   <div className="min-h-[28px]">
                     {unavailableStamps.length > 0 && (
-                      <div className="flex flex-wrap gap-x-2 gap-y-1.5 items-center px-2 bg-red-50/50 py-1.5 rounded-lg border border-red-100">
-                        <span className="text-[11px] font-black text-red-600 uppercase tracking-tight shrink-0">目前缺貨:</span>
+                      <div className="flex flex-wrap gap-x-2 gap-y-1.5 items-center px-2 bg-red-50/50 dark:bg-red-900/10 py-1.5 rounded-lg border border-red-100 dark:border-red-900/30">
+                        <span className="text-[11px] font-black text-red-600 dark:text-red-400 uppercase tracking-tight shrink-0">目前缺貨:</span>
                         <div className="flex flex-wrap gap-x-1.5 gap-y-0.5">
                           {unavailableStamps.map(d => (
-                            <span key={d.id} className="text-[11px] font-bold text-red-500">{d.label}</span>
+                            <span key={d.id} className="text-[11px] font-bold text-red-500 dark:text-red-300">{d.label}</span>
                           ))}
                         </div>
                         <button 
@@ -291,7 +341,7 @@
                         onClick={() => handleKeyPress(key)}
                         className={`
                           h-12 rounded-xl flex items-center justify-center text-xl font-black transition-all active:scale-95 shadow-sm border
-                          ${key === 'back' ? 'bg-slate-200 text-slate-600 border-slate-300' : 'bg-white text-slate-800 border-slate-200 active:bg-slate-50'}
+                          ${key === 'back' ? 'bg-slate-200 dark:bg-slate-700 text-slate-600 dark:text-slate-300 border-slate-300 dark:border-slate-600 active:bg-slate-300 dark:active:bg-slate-600' : 'bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-200 border-slate-200 dark:border-slate-700 active:bg-slate-50 dark:active:bg-slate-700'}
                         `}
                       >
                         {key === 'back' ? (
@@ -304,43 +354,46 @@
               </>
             ) : (
               <div className="space-y-4">
-                <div className="bg-white rounded-2xl p-4 shadow-sm border border-slate-200">
+                <div className="bg-white dark:bg-slate-800 rounded-2xl p-4 shadow-sm border border-slate-200 dark:border-slate-700">
                   <div className="flex items-center justify-between mb-4">
                     <div className="flex items-center gap-2">
-                      <div className="w-1 h-5 bg-blue-500 rounded-full"></div>
-                      <h2 className="text-lg font-black text-slate-800 tracking-tight">方案優先順序</h2>
+                      <StampIcon />
+                      <h2 className="text-lg font-black text-slate-800 dark:text-slate-100 tracking-tight">方案優先順序</h2>
                     </div>
                   </div>
                   <div className="grid grid-cols-2 gap-3">
                     <button 
                       onClick={() => setPriority('stamps')}
-                      className={`flex flex-col items-center justify-center p-3 rounded-xl border-2 transition-all ${priority === 'stamps' ? 'border-blue-500 bg-blue-50' : 'border-slate-100 bg-slate-50 opacity-60'}`}
+                      className={`flex flex-col items-center justify-center p-3 rounded-xl border-2 transition-all ${priority === 'stamps' ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20' : 'border-slate-100 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/40 opacity-60'}`}
                     >
-                      <span className={`text-xs font-black mb-1 ${priority === 'stamps' ? 'text-blue-600' : 'text-slate-500'}`}>枚數少優先</span>
-                      <span className="text-[9px] text-slate-400 font-bold leading-tight">儘量使用最少數量郵票</span>
+                      <span className={`text-xs font-black mb-1 ${priority === 'stamps' ? 'text-blue-600 dark:text-blue-400' : 'text-slate-500 dark:text-slate-400'}`}>枚數少優先</span>
+                      <span className="text-[9px] text-slate-400 dark:text-slate-500 font-bold leading-tight">儘量使用最少數量郵票</span>
                     </button>
                     <button 
                       onClick={() => setPriority('varieties')}
-                      className={`flex flex-col items-center justify-center p-3 rounded-xl border-2 transition-all ${priority === 'varieties' ? 'border-indigo-500 bg-indigo-50' : 'border-slate-100 bg-slate-50 opacity-60'}`}
+                      className={`flex flex-col items-center justify-center p-3 rounded-xl border-2 transition-all ${priority === 'varieties' ? 'border-indigo-500 bg-indigo-50 dark:bg-indigo-900/20' : 'border-slate-100 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/40 opacity-60'}`}
                     >
-                      <span className={`text-xs font-black mb-1 ${priority === 'varieties' ? 'text-indigo-600' : 'text-slate-500'}`}>款數少優先</span>
-                      <span className="text-[9px] text-slate-400 font-bold leading-tight">儘量減少面值種類</span>
+                      <span className={`text-xs font-black mb-1 ${priority === 'varieties' ? 'text-indigo-600 dark:text-indigo-400' : 'text-slate-500 dark:text-slate-400'}`}>款數少優先</span>
+                      <span className="text-[9px] text-slate-400 dark:text-slate-500 font-bold leading-tight">儘量減少面值種類</span>
                     </button>
                   </div>
                 </div>
 
-                <div className="bg-white rounded-2xl p-4 shadow-sm border border-slate-200">
-                  <div className="flex items-center justify-between mb-4">
-                    <div className="flex items-center gap-2">
-                      <div className="w-1 h-5 bg-blue-500 rounded-full"></div>
-                      <h2 className="text-lg font-black text-slate-800 tracking-tight">庫存設定</h2>
+                <div className="bg-white dark:bg-slate-800 rounded-2xl p-4 shadow-sm border border-slate-200 dark:border-slate-700">
+                  <div className="flex flex-col mb-4">
+                    <div className="flex items-center justify-between mb-1">
+                      <div className="flex items-center gap-2">
+                        <StampIcon />
+                        <h2 className="text-lg font-black text-slate-800 dark:text-slate-100 tracking-tight">庫存設定</h2>
+                      </div>
+                      <button 
+                        onClick={() => setDisabledStamps([])}
+                        className="text-[11px] font-black text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20 px-3 py-1 rounded-lg uppercase active:bg-blue-100 transition-all"
+                      >
+                        重設全部
+                      </button>
                     </div>
-                    <button 
-                      onClick={() => setDisabledStamps([])}
-                      className="text-[11px] font-black text-blue-600 bg-blue-50 px-3 py-1 rounded-lg uppercase active:bg-blue-100 transition-all"
-                    >
-                      重設全部
-                    </button>
+                    <p className="text-[10px] font-bold text-slate-400 dark:text-slate-500 pl-3">點擊郵票面額即可切換『缺貨』狀態，計算時將會避開該款郵票。</p>
                   </div>
                   <div className="grid grid-cols-4 gap-3">
                     {DENOMINATIONS.map(d => {
@@ -349,10 +402,10 @@
                         <button 
                           key={d.id} 
                           onClick={() => toggleStamp(d.id)}
-                          className={`relative aspect-square rounded-xl flex items-center justify-center transition-all active:scale-95 shadow-md border-2 text-[15px] font-black
+                          className={`relative aspect-square rounded-xl flex items-center justify-center transition-all active:scale-95 shadow-md border-2 text-[17px] font-black
                             ${isDisabled 
-                              ? 'bg-slate-100 border-slate-200 text-slate-400 grayscale opacity-40' 
-                              : `${d.color} border-black/5 text-slate-900`}`}
+                              ? 'bg-slate-100 dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-400 dark:text-slate-600 grayscale opacity-40' 
+                              : `${d.color} border-black/5 dark:border-white/5 text-slate-900 dark:text-slate-100`}`}
                         >
                           {d.label}
                           {isDisabled && (
@@ -367,7 +420,7 @@
                   </div>
                   <button 
                     onClick={() => setActiveTab('calc')}
-                    className="w-full mt-6 py-3 bg-blue-600 text-white font-black rounded-xl shadow-lg shadow-blue-200 active:scale-95 transition-all uppercase tracking-widest text-xs"
+                    className="w-full mt-6 py-3 bg-blue-600 text-white font-black rounded-xl shadow-lg shadow-blue-200 dark:shadow-none active:scale-95 transition-all uppercase tracking-widest text-xs"
                   >
                     確認並返回
                   </button>
