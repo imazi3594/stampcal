@@ -68,6 +68,10 @@
     function App() {
       const [targetPostage, setTargetPostage] = useState('');
       const [activeTab, setActiveTab] = useState('calc');
+      const [priority, setPriority] = useState(() => {
+        const saved = localStorage.getItem('calc_priority');
+        return saved || 'stamps'; // 'stamps' or 'varieties'
+      });
       const [disabledStamps, setDisabledStamps] = useState(() => {
         const saved = localStorage.getItem('disabled_stamps');
         return saved ? JSON.parse(saved) : [];
@@ -76,6 +80,10 @@
       useEffect(() => {
         localStorage.setItem('disabled_stamps', JSON.stringify(disabledStamps));
       }, [disabledStamps]);
+
+      useEffect(() => {
+        localStorage.setItem('calc_priority', priority);
+      }, [priority]);
 
       const toggleStamp = (id) => {
         setDisabledStamps(prev => 
@@ -142,20 +150,28 @@
                 const existing = dp[i];
                 let shouldReplace = false;
 
-                if (currentNew.totalCount < existing.totalCount) {
-                  shouldReplace = true;
-                } else if (currentNew.totalCount === existing.totalCount) {
-                  if (isIntegerTarget) {
-                    if (currentNew.nonIntCount < existing.nonIntCount) {
-                      shouldReplace = true;
-                    } else if (currentNew.nonIntCount === existing.nonIntCount) {
-                      if (currentNew.varietyCount < existing.varietyCount) {
-                        shouldReplace = true;
-                      }
-                    }
-                  } else {
+                if (priority === 'stamps') {
+                  if (currentNew.totalCount < existing.totalCount) {
+                    shouldReplace = true;
+                  } else if (currentNew.totalCount === existing.totalCount) {
                     if (currentNew.varietyCount < existing.varietyCount) {
                       shouldReplace = true;
+                    } else if (currentNew.varietyCount === existing.varietyCount) {
+                       if (isIntegerTarget && currentNew.nonIntCount < existing.nonIntCount) {
+                         shouldReplace = true;
+                       }
+                    }
+                  }
+                } else {
+                  if (currentNew.varietyCount < existing.varietyCount) {
+                    shouldReplace = true;
+                  } else if (currentNew.varietyCount === existing.varietyCount) {
+                    if (currentNew.totalCount < existing.totalCount) {
+                      shouldReplace = true;
+                    } else if (currentNew.totalCount === existing.totalCount) {
+                       if (isIntegerTarget && currentNew.nonIntCount < existing.nonIntCount) {
+                         shouldReplace = true;
+                       }
                     }
                   }
                 }
@@ -168,7 +184,7 @@
           }
         }
         return dp[target];
-      }, [targetPostage, disabledStamps]);
+      }, [targetPostage, disabledStamps, priority]);
 
       const unavailableStamps = DENOMINATIONS.filter(d => disabledStamps.includes(d.id));
 
@@ -178,25 +194,32 @@
             
             {activeTab === 'calc' ? (
               <>
-                <div className="flex items-center justify-between px-1">
-                  <div className="flex items-center gap-2">
-                    <div className="w-1 h-5 bg-blue-500 rounded-full"></div>
-                    <h2 className="text-lg font-black text-slate-800 tracking-tight">郵費組合計算機</h2>
+                <div className="bg-white rounded-2xl p-4 shadow-sm border border-slate-200 flex flex-col shrink-0">
+                  <div className="flex items-center justify-between mb-3 border-b border-slate-50 pb-2">
+                    <div className="flex items-center gap-2">
+                      <div className="w-1 h-5 bg-blue-500 rounded-full"></div>
+                      <h2 className="text-lg font-black text-slate-800 tracking-tight">郵費組合計算機</h2>
+                    </div>
+                    <button 
+                      onClick={() => setActiveTab('settings')}
+                      className="p-1.5 text-slate-400 active:text-blue-500 active:scale-95 transition-all"
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>
+                    </button>
                   </div>
-                  <button 
-                    onClick={() => setActiveTab('settings')}
-                    className="p-2 bg-white rounded-xl shadow-sm border border-slate-200 text-slate-500 active:bg-slate-50 active:scale-95 transition-all"
-                  >
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>
-                  </button>
-                </div>
-
-                <div className="bg-white rounded-2xl p-4 shadow-sm border border-slate-200 flex flex-col items-center justify-center shrink-0">
-                  <h1 className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">目標郵費 (最高 $9999.9)</h1>
-                  <div className="text-4xl font-black text-slate-900 flex items-center gap-1">
-                    <span className="text-slate-300 text-2xl">$</span>
-                    <span>{targetPostage || '0'}</span>
-                    <span className="w-0.5 h-8 bg-blue-500 animate-pulse rounded-full ml-1"></span>
+                  
+                  <div className="flex flex-col items-center justify-center">
+                    <h1 className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">目標郵費 (最高 $9999.9)</h1>
+                    <div className="text-4xl font-black text-slate-900 flex items-center gap-1">
+                      <span className="text-slate-300 text-2xl">$</span>
+                      <span>{targetPostage || '0'}</span>
+                      <span className="w-0.5 h-8 bg-blue-500 animate-pulse rounded-full ml-1"></span>
+                    </div>
+                    {priority === 'varieties' && (
+                      <div className="mt-1 px-2 py-0.5 bg-indigo-50 text-[10px] font-bold text-indigo-500 rounded-full uppercase tracking-tighter">
+                        款數優先模式
+                      </div>
+                    )}
                   </div>
                 </div>
 
@@ -205,7 +228,7 @@
                     {bestCombination ? (
                       <div className="bg-white rounded-2xl p-3 shadow-md border-2 border-blue-500 flex flex-col h-full transition-all duration-300">
                         <div className="flex items-center justify-between mb-2 pb-2 border-b border-slate-100 shrink-0">
-                          <h2 className="text-[11px] font-black text-slate-800 uppercase tracking-wider">最佳方案 ({bestCombination.totalCount} 枚)</h2>
+                          <h2 className="text-[11px] font-black text-slate-800 uppercase tracking-wider">最佳方案 ({bestCombination.totalCount} 枚, {bestCombination.varietyCount} 款)</h2>
                           <button onClick={() => handleKeyPress('C')} className="text-[11px] font-black text-red-500 bg-red-50 px-3 py-1 rounded-lg uppercase active:bg-red-100 transition-colors">清除</button>
                         </div>
                         <div className="flex-1 overflow-y-auto">
@@ -243,11 +266,19 @@
 
                   <div className="min-h-[28px]">
                     {unavailableStamps.length > 0 && (
-                      <div className="flex flex-wrap gap-1.5 items-center px-1 bg-red-50/50 py-1 rounded-lg">
+                      <div className="flex flex-wrap gap-x-2 gap-y-1.5 items-center px-2 bg-red-50/50 py-1.5 rounded-lg border border-red-100">
                         <span className="text-[11px] font-black text-red-600 uppercase tracking-tight shrink-0">目前缺貨:</span>
-                        {unavailableStamps.map(d => (
-                          <span key={d.id} className="text-[11px] font-bold text-red-500">{d.label}</span>
-                        ))}
+                        <div className="flex flex-wrap gap-x-1.5 gap-y-0.5">
+                          {unavailableStamps.map(d => (
+                            <span key={d.id} className="text-[11px] font-bold text-red-500">{d.label}</span>
+                          ))}
+                        </div>
+                        <button 
+                          onClick={() => setDisabledStamps([])}
+                          className="text-[10px] font-black text-white bg-blue-500 hover:bg-blue-600 px-1.5 py-0.5 rounded transition-all shadow-sm active:scale-95 shrink-0"
+                        >
+                          全部解除
+                        </button>
                       </div>
                     )}
                   </div>
@@ -273,51 +304,72 @@
                 </div>
               </>
             ) : (
-              <div className="bg-white rounded-2xl p-4 shadow-sm border border-slate-200">
-                <div className="flex items-center justify-between mb-4">
-                  <div className="flex items-center gap-2">
+              <div className="space-y-4">
+                <div className="bg-white rounded-2xl p-4 shadow-sm border border-slate-200">
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="flex items-center gap-2">
+                      <div className="w-1 h-5 bg-blue-500 rounded-full"></div>
+                      <h2 className="text-lg font-black text-slate-800 tracking-tight">方案優先順序</h2>
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-2 gap-3">
                     <button 
-                      onClick={() => setActiveTab('calc')}
-                      className="p-1 mr-1 text-slate-400 active:text-blue-500 transition-colors"
+                      onClick={() => setPriority('stamps')}
+                      className={`flex flex-col items-center justify-center p-3 rounded-xl border-2 transition-all ${priority === 'stamps' ? 'border-blue-500 bg-blue-50' : 'border-slate-100 bg-slate-50 opacity-60'}`}
                     >
-                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+                      <span className={`text-xs font-black mb-1 ${priority === 'stamps' ? 'text-blue-600' : 'text-slate-500'}`}>枚數少優先</span>
+                      <span className="text-[9px] text-slate-400 font-bold leading-tight">儘量使用最少數量郵票</span>
                     </button>
-                    <div className="w-1 h-5 bg-blue-500 rounded-full"></div>
-                    <h2 className="text-lg font-black text-slate-800 tracking-tight">庫存設定</h2>
+                    <button 
+                      onClick={() => setPriority('varieties')}
+                      className={`flex flex-col items-center justify-center p-3 rounded-xl border-2 transition-all ${priority === 'varieties' ? 'border-indigo-500 bg-indigo-50' : 'border-slate-100 bg-slate-50 opacity-60'}`}
+                    >
+                      <span className={`text-xs font-black mb-1 ${priority === 'varieties' ? 'text-indigo-600' : 'text-slate-500'}`}>款數少優先</span>
+                      <span className="text-[9px] text-slate-400 font-bold leading-tight">儘量減少面值種類</span>
+                    </button>
+                  </div>
+                </div>
+
+                <div className="bg-white rounded-2xl p-4 shadow-sm border border-slate-200">
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="flex items-center gap-2">
+                      <div className="w-1 h-5 bg-blue-500 rounded-full"></div>
+                      <h2 className="text-lg font-black text-slate-800 tracking-tight">庫存設定</h2>
+                    </div>
+                    <button 
+                      onClick={() => setDisabledStamps([])}
+                      className="text-[11px] font-black text-blue-600 bg-blue-50 px-3 py-1 rounded-lg uppercase active:bg-blue-100 transition-all"
+                    >
+                      重設全部
+                    </button>
+                  </div>
+                  <div className="grid grid-cols-4 gap-2">
+                    {DENOMINATIONS.map(d => {
+                      const isDisabled = disabledStamps.includes(d.id);
+                      return (
+                        <button 
+                          key={d.id} 
+                          onClick={() => toggleStamp(d.id)}
+                          className={`flex flex-col items-center justify-center p-2 rounded-xl border transition-all active:scale-95 text-center ${isDisabled ? 'stamp-disabled border-red-300 shadow-inner' : 'bg-slate-50 border-slate-100 hover:bg-slate-100'}`}
+                        >
+                          <div className={`w-9 h-9 mb-1.5 rounded-lg ${isDisabled ? 'bg-red-200 border-red-300' : d.color + ' border-slate-200'} border flex items-center justify-center text-[9px] font-black text-black shadow-sm`}>
+                            {d.label}
+                          </div>
+                          <div className="flex flex-col items-center">
+                            <span className={`text-[10px] font-black tracking-tight ${isDisabled ? 'text-red-500' : 'text-slate-700'}`}>{d.label}</span>
+                            <div className={`w-1.5 h-1.5 rounded-full mt-1 ${isDisabled ? 'bg-red-400' : 'bg-emerald-400'}`}></div>
+                          </div>
+                        </button>
+                      );
+                    })}
                   </div>
                   <button 
-                    onClick={() => setDisabledStamps([])}
-                    className="text-[11px] font-black text-blue-600 bg-blue-50 px-3 py-1 rounded-lg uppercase active:bg-blue-100 transition-all"
+                    onClick={() => setActiveTab('calc')}
+                    className="w-full mt-6 py-3 bg-blue-600 text-white font-black rounded-xl shadow-lg shadow-blue-200 active:scale-95 transition-all uppercase tracking-widest text-xs"
                   >
-                    重設全部
+                    確認並返回
                   </button>
                 </div>
-                <div className="grid grid-cols-4 gap-2">
-                  {DENOMINATIONS.map(d => {
-                    const isDisabled = disabledStamps.includes(d.id);
-                    return (
-                      <button 
-                        key={d.id} 
-                        onClick={() => toggleStamp(d.id)}
-                        className={`flex flex-col items-center justify-center p-2 rounded-xl border transition-all active:scale-95 text-center ${isDisabled ? 'stamp-disabled border-red-300 shadow-inner' : 'bg-slate-50 border-slate-100 hover:bg-slate-100'}`}
-                      >
-                        <div className={`w-9 h-9 mb-1.5 rounded-lg ${isDisabled ? 'bg-red-200 border-red-300' : d.color + ' border-slate-200'} border flex items-center justify-center text-[9px] font-black text-black shadow-sm`}>
-                          {d.label}
-                        </div>
-                        <div className="flex flex-col items-center">
-                          <span className={`text-[10px] font-black tracking-tight ${isDisabled ? 'text-red-500' : 'text-slate-700'}`}>{d.label}</span>
-                          <div className={`w-1.5 h-1.5 rounded-full mt-1 ${isDisabled ? 'bg-red-400' : 'bg-emerald-400'}`}></div>
-                        </div>
-                      </button>
-                    );
-                  })}
-                </div>
-                <button 
-                  onClick={() => setActiveTab('calc')}
-                  className="w-full mt-6 py-3 bg-blue-600 text-white font-black rounded-xl shadow-lg shadow-blue-200 active:scale-95 transition-all uppercase tracking-widest text-xs"
-                >
-                  確認並返回
-                </button>
               </div>
             )}
           </div>
