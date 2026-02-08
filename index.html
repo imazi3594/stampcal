@@ -301,9 +301,11 @@
                 <div className="shrink-0 flex flex-col space-y-2">
                   <div className="h-[150px] w-full">
                     {bestCombination ? (
-                      <div className="bg-white dark:bg-slate-800 rounded-2xl p-3 shadow-md border-2 border-blue-500 flex flex-col h-full transition-all duration-300">
+                      <div className={`bg-white dark:bg-slate-800 rounded-2xl p-3 shadow-md border-2 flex flex-col h-full transition-all duration-300 ${priority === 'stamps' ? 'border-blue-500' : 'border-indigo-500'}`}>
                         <div className="flex items-center justify-between mb-1 pb-1 border-b border-slate-100 dark:border-slate-700 shrink-0">
-                          <h2 className="text-[11px] font-black text-slate-800 dark:text-slate-200 uppercase tracking-wider">最佳方案 ({bestCombination.totalCount} 枚, {bestCombination.varietyCount} 款)</h2>
+                          <h2 className={`text-[11px] font-black uppercase tracking-wider ${priority === 'stamps' ? 'text-blue-600 dark:text-blue-400' : 'text-indigo-600 dark:text-indigo-400'}`}>
+                            最佳方案 ({bestCombination.totalCount} 枚, {bestCombination.varietyCount} 款)
+                          </h2>
                           <button onClick={() => handleKeyPress('C')} className="text-[11px] font-black text-red-500 dark:text-red-400 bg-red-50 dark:bg-red-900/20 px-2 py-0.5 rounded-lg uppercase active:bg-red-100 transition-colors">清除</button>
                         </div>
                         <div className="flex-1 overflow-y-auto custom-scrollbar">
@@ -321,8 +323,8 @@
                                       {denom?.label}
                                     </div>
                                     <div className="flex items-center">
-                                      <span className="text-blue-400 dark:text-blue-500 text-xs font-black mr-0.5">×</span>
-                                      <span className="text-2xl font-black text-blue-600 dark:text-blue-400 leading-none">{count}</span>
+                                      <span className={`${priority === 'stamps' ? 'text-blue-400 dark:text-blue-500' : 'text-indigo-400 dark:text-indigo-500'} text-xs font-black mr-0.5`}>×</span>
+                                      <span className={`text-2xl font-black leading-none ${priority === 'stamps' ? 'text-blue-600 dark:text-blue-400' : 'text-indigo-600 dark:text-indigo-400'}`}>{count}</span>
                                     </div>
                                   </div>
                                 </div>
