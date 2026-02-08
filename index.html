@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>郵費組合計算機</title>
   <!-- Browser Favicon -->
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect x=%225%22 y=%225%22 width=%2290%22 height=%2290%22 rx=%225%22 fill=%22%2300703c%22/><path d=%22M25 40 L50 60 L75 40%22 fill=%22none%22 stroke=%22white%22 stroke-width=%228%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22/><rect x=%2220%22 y=%2230%22 width=%2260%22 height=%2245%22 fill=%22none%22 stroke=%22white%22 stroke-width=%225%22 rx=%223%22/><circle cx=%220%22 cy=%220%22 r=%226%22 fill=%22%23f8fafc%22 transform=%22translate(50, 5)%22/><circle cx=%220%22 cy=%220%22 r=%226%22 fill=%22%23f8fafc%22 transform=%22translate(50, 95)%22/><circle cx=%220%22 cy=%220%22 r=%226%22 fill=%22%23f8fafc%22 transform=%22translate(5, 50)%22/><circle cx=%220%22 cy=%220%22 r=%226%22 fill=%22%23f8fafc%22 transform=%22translate(95, 50)%22/></svg>">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect x=%225%22 y=%225%22 width=%2290%22 height=%2290%22 rx=%2210%22 fill=%22%2300703c%22/><path d=%22M20 35 L50 60 L80 35%22 fill=%22none%22 stroke=%22white%22 stroke-width=%228%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22/><rect x=%2220%22 y=%2235%22 width=%2260%22 height=%2240%22 fill=%22none%22 stroke=%22white%22 stroke-width=%226%22 rx=%224%22/><circle cx=%2270%22 cy=%2265%22 r=%2212%22 fill=%22white%22/><text x=%2270%22 y=%2272%22 font-family=%22Arial%22 font-size=%2216%22 font-weight=%22900%22 text-anchor=%22middle%22 fill=%22%2300703c%22>$</text></svg>">
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
   <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
@@ -86,15 +86,12 @@
       { id: 'd16', value: 50.0, label: '$50', color: 'bg-cyan-300 dark:bg-cyan-900/40' },
     ];
 
-    const StampIcon = ({ className = "w-5 h-5" }) => (
+    const StampIcon = ({ className = "w-5 h-5", color = "#00703c" }) => (
       <svg className={className} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M21 8V16C21 18.7614 18.7614 21 16 21H8C5.23858 21 3 18.7614 3 16V8C3 5.23858 5.23858 3 8 3H16C18.7614 3 21 5.23858 21 8Z" fill="#00703c"/>
-        <path d="M7 9L12 12.5L17 9" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-        <rect x="6" y="8" width="12" height="8" rx="1" stroke="white" strokeWidth="1.5"/>
-        <circle cx="12" cy="3" r="1.5" className="fill-slate-50 dark:fill-slate-900"/>
-        <circle cx="12" cy="21" r="1.5" className="fill-slate-50 dark:fill-slate-900"/>
-        <circle cx="3" cy="12" r="1.5" className="fill-slate-50 dark:fill-slate-900"/>
-        <circle cx="21" cy="12" r="1.5" className="fill-slate-50 dark:fill-slate-900"/>
+        <rect x="2" y="6" width="20" height="13" rx="2" fill={color} stroke="white" strokeWidth="1.2"/>
+        <path d="M2 8L12 14L22 8" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+        <circle cx="17" cy="14" r="5" fill="white" />
+        <text x="17" y="17.5" textAnchor="middle" fontSize="9" fontWeight="900" fontFamily="Inter, sans-serif" fill={color}>$</text>
       </svg>
     );
 
@@ -131,6 +128,8 @@
       useEffect(() => {
         localStorage.setItem('calc_priority', priority);
       }, [priority]);
+
+      const themeColor = useMemo(() => priority === 'stamps' ? '#00703c' : '#9333ea', [priority]);
 
       const toggleStamp = (id) => {
         setDisabledStamps(prev => 
@@ -262,7 +261,7 @@
                 <div className="bg-white dark:bg-slate-800/80 backdrop-blur-sm rounded-2xl p-4 shadow-sm border border-slate-200 dark:border-slate-700/50 flex flex-col shrink-0">
                   <div className="flex items-center justify-between mb-3 border-b border-slate-50 dark:border-slate-700/50 pb-2">
                     <div className="flex items-center gap-2">
-                      <StampIcon />
+                      <StampIcon color={themeColor} />
                       <h2 className="text-lg font-black text-slate-800 dark:text-slate-100 tracking-tight">郵費組合計算機</h2>
                     </div>
                     <div className="flex items-center gap-1">
@@ -410,7 +409,7 @@
                 <div className="bg-white/90 dark:bg-slate-800/90 backdrop-blur-md rounded-2xl p-4 shadow-sm border border-slate-200 dark:border-slate-700">
                   <div className="flex items-center justify-between mb-4">
                     <div className="flex items-center gap-2">
-                      <StampIcon />
+                      <StampIcon color={themeColor} />
                       <h2 className="text-lg font-black text-slate-800 dark:text-slate-100 tracking-tight">方案優先順序</h2>
                     </div>
                   </div>
@@ -436,7 +435,7 @@
                   <div className="flex flex-col mb-4">
                     <div className="flex items-center justify-between mb-1">
                       <div className="flex items-center gap-2">
-                        <StampIcon />
+                        <StampIcon color={themeColor} />
                         <h2 className="text-lg font-black text-slate-800 dark:text-slate-100 tracking-tight">庫存設定</h2>
                       </div>
                       <button 
@@ -473,7 +472,7 @@
                   </div>
                   <button 
                     onClick={() => setActiveTab('calc')}
-                    className={`w-full mt-6 py-3 text-white font-black rounded-xl shadow-lg active:scale-95 transition-all uppercase tracking-widest text-xs ${priority === 'stamps' ? 'bg-hkPost shadow-green-200 dark:shadow-none' : 'bg-purple-600 shadow-purple-200 dark:shadow-none'}`}
+                    className={`w-full mt-6 py-3 text-white font-black rounded-xl active:scale-95 transition-all uppercase tracking-widest text-xs ${priority === 'stamps' ? 'bg-hkPost' : 'bg-purple-600'}`}
                   >
                     確認並返回
                   </button>
@@ -485,7 +484,7 @@
               <div className="bg-white/90 dark:bg-slate-800/90 backdrop-blur-md rounded-2xl p-6 shadow-sm border border-slate-200 dark:border-slate-700 animate-in fade-in slide-in-from-bottom-2 duration-300">
                 <div className="flex items-center gap-3 mb-6">
                   <div className={`p-3 rounded-2xl shadow-lg ${priority === 'stamps' ? 'bg-hkPost shadow-hkPost/20' : 'bg-purple-600 shadow-purple-600/20'}`}>
-                    <StampIcon className="w-8 h-8" />
+                    <StampIcon className="w-8 h-8" color={priority === 'stamps' ? '#00703c' : '#ffffff'} />
                   </div>
                   <div>
                     <h2 className="text-2xl font-black text-slate-800 dark:text-slate-100 tracking-tight leading-none mb-1">關於</h2>
@@ -511,7 +510,7 @@
 
                 <button 
                   onClick={() => setActiveTab('calc')}
-                  className={`w-full mt-8 py-3 text-white font-black rounded-xl shadow-lg active:scale-95 transition-all uppercase tracking-widest text-xs ${priority === 'stamps' ? 'bg-hkPost shadow-green-200' : 'bg-purple-600 shadow-purple-200'}`}
+                  className={`w-full mt-8 py-3 text-white font-black rounded-xl active:scale-95 transition-all uppercase tracking-widest text-xs ${priority === 'stamps' ? 'bg-hkPost' : 'bg-purple-600'}`}
                 >
                   返回首頁
                 </button>
