@@ -88,8 +88,10 @@
       touch-action: manipulation;
     }
     .app-container {
-      min-height: 100vh;
-      min-height: -webkit-fill-available;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
       transition: background-color 0.6s cubic-bezier(0.4, 0, 0.2, 1);
     }
     * {
@@ -101,7 +103,7 @@
   </style>
 <link rel="stylesheet" href="/index.css">
 </head>
-<body class="bg-slate-50 dark:bg-slate-900 overflow-x-hidden">
+<body class="bg-slate-50 dark:bg-slate-900 overflow-hidden">
   <div id="root"></div>
 
   <script type="text/babel">
@@ -375,7 +377,7 @@
       }, [priority]);
 
       return (
-        <div className={`app-container flex flex-col items-center justify-between ${bgClasses}`}>
+        <div className={`app-container items-center ${bgClasses}`}>
           
           {warning && (
             <div className="fixed top-6 left-1/2 -translate-x-1/2 z-[100] animate-slide-down">
@@ -386,10 +388,10 @@
             </div>
           )}
 
-          <div className="max-w-md w-full flex flex-col p-4 space-y-3">
+          <div className="max-w-md w-full h-full flex flex-col relative overflow-hidden">
             
             {activeTab === 'calc' && (
-              <>
+              <div className="flex-1 flex flex-col p-4 space-y-3 overflow-y-auto">
                 <div className="bg-white dark:bg-slate-800/80 backdrop-blur-sm rounded-2xl p-4 shadow-sm border border-slate-200 dark:border-slate-700/50 flex flex-col shrink-0">
                   <div className="flex items-center justify-between mb-3 border-b border-slate-50 dark:border-slate-700/50 pb-2">
                     <div className="flex items-center gap-2">
@@ -422,15 +424,9 @@
                     
                     <button onClick={() => setPriority(prev => prev === 'stamps' ? 'varieties' : 'stamps')} className={`flex flex-col items-center justify-center px-3 py-2 rounded-xl border-2 transition-all active:scale-95 shadow-sm ${priority === 'stamps' ? 'border-hkPost bg-green-50 dark:bg-green-900/20 text-hkPost dark:text-green-400' : 'border-purple-500 bg-purple-50 dark:bg-purple-900/20 text-purple-600 dark:text-purple-400'}`}>
                       {priority === 'stamps' ? (
-                        <>
-                          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="mb-0.5"><rect width="8" height="8" x="3" y="3" rx="1"/><rect width="8" height="8" x="13" y="3" rx="1"/><rect width="8" height="8" x="3" y="13" rx="1"/><rect width="8" height="8" x="13" y="13" rx="1"/></svg>
-                          <span className="text-[10px] font-black uppercase tracking-tighter">數量優先</span>
-                        </>
+                        <><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="mb-0.5"><rect width="8" height="8" x="3" y="3" rx="1"/><rect width="8" height="8" x="13" y="3" rx="1"/><rect width="8" height="8" x="3" y="13" rx="1"/><rect width="8" height="8" x="13" y="13" rx="1"/></svg><span className="text-[10px] font-black uppercase tracking-tighter">數量優先</span></>
                       ) : (
-                        <>
-                          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="mb-0.5"><path d="M21 16V8a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2Z"/><path d="M7 12h10"/></svg>
-                          <span className="text-[10px] font-black uppercase tracking-tighter">面值優先</span>
-                        </>
+                        <><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="mb-0.5"><path d="M21 16V8a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2Z"/><path d="M7 12h10"/></svg><span className="text-[10px] font-black uppercase tracking-tighter">面值優先</span></>
                       )}
                     </button>
                   </div>
@@ -493,9 +489,7 @@
                             <span key={s.id} className="text-[11px] font-bold text-blue-500 dark:text-blue-300">{s.label}</span>
                           ))}
                         </div>
-                        <button onClick={() => setCustomStamps([])} className="text-[10px] font-black text-white px-1.5 py-0.5 rounded transition-all shadow-sm active:scale-95 shrink-0 bg-blue-600 hover:bg-blue-700 ml-auto">
-                          清除自訂
-                        </button>
+                        <button onClick={() => setCustomStamps([])} className="text-[10px] font-black text-white px-1.5 py-0.5 rounded transition-all shadow-sm active:scale-95 shrink-0 bg-blue-600 hover:bg-blue-700 ml-auto">清除自訂</button>
                       </div>
                     )}
                     {unavailableStamps.length > 0 && (
@@ -506,162 +500,150 @@
                             <span key={d.id} className="text-[11px] font-bold text-red-500 dark:text-red-300">{d.label}</span>
                           ))}
                         </div>
-                        <button onClick={() => setDisabledStamps([])} className={`text-[10px] font-black text-white px-1.5 py-0.5 rounded transition-all shadow-sm active:scale-95 shrink-0 ml-auto ${priority === 'stamps' ? 'bg-hkPost hover:bg-hkPost-dark' : 'bg-purple-600 hover:bg-purple-700'}`}>
-                          全部解除
-                        </button>
+                        <button onClick={() => setDisabledStamps([])} className={`text-[10px] font-black text-white px-1.5 py-0.5 rounded transition-all shadow-sm active:scale-95 shrink-0 ml-auto ${priority === 'stamps' ? 'bg-hkPost hover:bg-hkPost-dark' : 'bg-purple-600 hover:bg-purple-700'}`}>全部解除</button>
                       </div>
                     )}
                   </div>
                 </div>
 
-                <div className="pt-1">
+                <div className="pt-1 flex-1">
                   <div className="grid grid-cols-3 gap-2.5">
                     {['1', '2', '3', '4', '5', '6', '7', '8', '9', '.', '0', 'back'].map((key) => (
                       <button key={key} onClick={() => handleKeyPress(key)} className={`h-12 rounded-xl flex items-center justify-center text-xl font-black transition-all active:scale-95 shadow-sm border ${key === 'back' ? 'bg-slate-200 dark:bg-slate-700 text-slate-600 dark:text-slate-300 border-slate-300 dark:border-slate-600 active:bg-slate-300 dark:active:bg-slate-600' : 'bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm text-slate-800 dark:text-slate-200 border-slate-200 dark:border-slate-700 active:bg-slate-50 dark:active:bg-slate-700'}`}>
-                        {key === 'back' ? (
-                          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
-                        ) : key}
+                        {key === 'back' ? (<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>) : key}
                       </button>
                     ))}
                   </div>
                 </div>
-              </>
+                
+                <footer onClick={() => setActiveTab('about')} className="w-full py-4 flex flex-col items-center gap-1 opacity-60 hover:opacity-100 transition-opacity cursor-pointer group shrink-0">
+                  <div className="h-[1px] w-8 bg-slate-300 dark:bg-slate-700/50 mb-1"></div>
+                  <p className={`text-[8px] font-black text-slate-400 dark:text-slate-500 tracking-[0.2em] uppercase transition-colors ${priority === 'stamps' ? 'group-hover:text-hkPost' : 'group-hover:text-purple-600'}`}>Just for fun 🤡</p>
+                </footer>
+              </div>
             )}
 
             {activeTab === 'settings' && (
-              <div className="space-y-4">
-                <div className="bg-white/90 dark:bg-slate-800/90 backdrop-blur-md rounded-2xl p-4 shadow-sm border border-slate-200 dark:border-slate-700">
-                  <div className="flex items-center gap-2 mb-4">
-                    <ThemeBar priority={priority} />
-                    <h2 className="text-lg font-black text-slate-800 dark:text-slate-100 tracking-tight">方案優先順序</h2>
-                  </div>
-                  <div className="grid grid-cols-2 gap-3">
-                    <button onClick={() => setPriority('stamps')} className={`flex flex-col items-center justify-center p-3 rounded-xl border-2 transition-all ${priority === 'stamps' ? 'border-hkPost bg-green-50 dark:bg-green-900/20' : 'border-slate-100 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/40 opacity-60'}`}>
-                      <span className={`text-xs font-black mb-1 ${priority === 'stamps' ? 'text-hkPost dark:text-green-400' : 'text-slate-500 dark:text-slate-400'}`}>數量優先</span>
-                      <span className="text-[9px] text-slate-400 dark:text-slate-500 font-bold text-center">使用最少數量郵票</span>
-                    </button>
-                    <button onClick={() => setPriority('varieties')} className={`flex flex-col items-center justify-center p-3 rounded-xl border-2 transition-all ${priority === 'varieties' ? 'border-purple-500 bg-purple-50 dark:bg-purple-900/20' : 'border-slate-100 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/40 opacity-60'}`}>
-                      <span className={`text-xs font-black mb-1 ${priority === 'varieties' ? 'text-purple-600 dark:text-purple-400' : 'text-slate-500 dark:text-slate-400'}`}>面值優先</span>
-                      <span className="text-[9px] text-slate-400 dark:text-slate-500 font-bold text-center">減少面額種類</span>
-                    </button>
-                  </div>
+              <div className="flex-1 flex flex-col bg-white dark:bg-slate-900 overflow-hidden animate-in slide-in-from-right duration-300">
+                {/* Sticky Settings Header */}
+                <div className="shrink-0 flex items-center justify-between p-4 border-b border-slate-100 dark:border-slate-800 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md z-10">
+                   <div className="flex items-center gap-2">
+                     <ThemeBar priority={priority} />
+                     <h2 className="text-xl font-black text-slate-800 dark:text-slate-100 tracking-tight">偏好設定</h2>
+                   </div>
+                   <button onClick={() => setActiveTab('calc')} className="p-2 text-slate-400 hover:text-slate-600 dark:text-slate-500">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+                   </button>
                 </div>
 
-                <div className="bg-white/90 dark:bg-slate-800/90 backdrop-blur-md rounded-2xl p-4 shadow-sm border border-slate-200 dark:border-slate-700">
-                  <div className="flex items-center justify-between mb-4">
-                    <div className="flex items-center gap-2">
-                      <ThemeBar priority={priority} />
-                      <h2 className="text-lg font-black text-slate-800 dark:text-slate-100 tracking-tight">通用郵票庫存</h2>
+                {/* Scrollable Settings Content */}
+                <div className="flex-1 overflow-y-auto p-4 space-y-6 pb-24 custom-scrollbar">
+                  {/* Priority Mode */}
+                  <div className="space-y-3">
+                    <h3 className="text-xs font-black text-slate-400 uppercase tracking-widest pl-1">方案優先順序</h3>
+                    <div className="grid grid-cols-2 gap-3">
+                      <button onClick={() => setPriority('stamps')} className={`flex flex-col items-center justify-center p-4 rounded-2xl border-2 transition-all shadow-sm ${priority === 'stamps' ? 'border-hkPost bg-green-50 dark:bg-green-900/20' : 'border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/40 opacity-60'}`}>
+                        <span className={`text-sm font-black mb-1 ${priority === 'stamps' ? 'text-hkPost dark:text-green-400' : 'text-slate-500 dark:text-slate-400'}`}>數量優先</span>
+                        <span className="text-[10px] text-slate-400 dark:text-slate-500 font-bold text-center">使用最少數量郵票</span>
+                      </button>
+                      <button onClick={() => setPriority('varieties')} className={`flex flex-col items-center justify-center p-4 rounded-2xl border-2 transition-all shadow-sm ${priority === 'varieties' ? 'border-purple-500 bg-purple-50 dark:bg-purple-900/20' : 'border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/40 opacity-60'}`}>
+                        <span className={`text-sm font-black mb-1 ${priority === 'varieties' ? 'text-purple-600 dark:text-purple-400' : 'text-slate-500 dark:text-slate-400'}`}>面值優先</span>
+                        <span className="text-[10px] text-slate-400 dark:text-slate-500 font-bold text-center">減少面額種類</span>
+                      </button>
                     </div>
-                    <button onClick={() => setDisabledStamps([])} className={`text-[11px] font-black px-3 py-1 rounded-lg uppercase active:opacity-70 transition-all ${priority === 'stamps' ? 'text-hkPost bg-green-50 dark:bg-green-900/20' : 'text-purple-600 bg-purple-50 dark:bg-purple-900/20'}`}>重設</button>
                   </div>
-                  <div className="grid grid-cols-4 gap-3">
-                    {DENOMINATIONS.map(d => {
-                      const isDisabled = disabledStamps.includes(d.id);
-                      const isLastToggled = lastToggledId === d.id;
-                      return (
-                        <button key={d.id} onClick={() => toggleStamp(d.id)} className={`relative aspect-square rounded-xl flex items-center justify-center stamp-item-transition active:scale-75 shadow-md border-2 text-[17px] font-black ${isLastToggled && !isDisabled ? 'animate-stamp-pop animate-ring-pulse' : ''} ${isLastToggled && isDisabled && !warning ? 'animate-stamp-shake' : ''} ${isDisabled ? 'bg-slate-100 dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-400 dark:text-slate-600 grayscale opacity-40 scale-95' : `${d.color} border-black/10 dark:border-white/10 text-slate-900 dark:text-slate-100 scale-100 ring-2 ${priority === 'stamps' ? 'ring-hkPost/5' : 'ring-purple-500/5'}`}`}>
-                          {d.label}
-                          <div className={`absolute inset-0 flex items-center justify-center pointer-events-none overflow-hidden rounded-xl transition-all duration-300 ${isDisabled ? 'opacity-100 backdrop-blur-[1px]' : 'opacity-0'}`}>
-                             <div className="w-[120%] h-[3px] bg-red-500/50 rotate-45 absolute" style={{ transform: isDisabled ? 'rotate(45deg)' : 'rotate(0deg) scaleX(0)' }}></div>
-                             <div className="w-[120%] h-[3px] bg-red-500/50 -rotate-45 absolute" style={{ transform: isDisabled ? 'rotate(-45deg)' : 'rotate(0deg) scaleX(0)' }}></div>
-                          </div>
-                          {!isDisabled && (
-                            <div className={`absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full border-2 border-white dark:border-slate-800 shadow-sm ${priority === 'stamps' ? 'bg-hkPost' : 'bg-purple-500'}`}></div>
-                          )}
-                        </button>
-                      );
-                    })}
-                  </div>
-                </div>
 
-                <div className="bg-white/90 dark:bg-slate-800/90 backdrop-blur-md rounded-2xl p-4 shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
-                  <div className="flex items-center justify-between mb-3">
-                    <div className="flex items-center gap-2">
-                      <ThemeBar priority={priority} />
-                      <h2 className="text-lg font-black text-slate-800 dark:text-slate-100 tracking-tight">自訂郵票面額</h2>
+                  {/* Stock Settings */}
+                  <div className="space-y-3">
+                    <div className="flex items-center justify-between pl-1">
+                      <h3 className="text-xs font-black text-slate-400 uppercase tracking-widest">通用郵票庫存</h3>
+                      <button onClick={() => setDisabledStamps([])} className={`text-[10px] font-black px-2 py-0.5 rounded-lg uppercase transition-all ${priority === 'stamps' ? 'text-hkPost bg-green-50 dark:bg-green-900/20' : 'text-purple-600 bg-purple-50 dark:bg-purple-900/20'}`}>重設</button>
                     </div>
-                    <button 
-                      onClick={() => setCustomStamps([])} 
-                      className={`text-[11px] font-black px-3 py-1 rounded-lg uppercase active:opacity-70 transition-all ${priority === 'stamps' ? 'text-hkPost bg-green-50 dark:bg-green-900/20' : 'text-purple-600 bg-purple-50 dark:bg-purple-900/20'}`}
-                    >
-                      重設
-                    </button>
-                  </div>
-                  <div className="flex w-full gap-2 mb-4">
-                    <input 
-                      type="number" 
-                      placeholder="面額 (上限 $50)" 
-                      value={customInputValue}
-                      onChange={(e) => setCustomInputValue(e.target.value)}
-                      className={`flex-1 min-w-0 px-3 py-2 bg-slate-50 dark:bg-slate-900 rounded-xl border-2 border-slate-100 dark:border-slate-700 outline-none font-bold text-slate-800 dark:text-slate-100 transition-all focus:border-opacity-100 text-sm ${priority === 'stamps' ? 'focus:border-hkPost' : 'focus:border-purple-500'}`}
-                    />
-                    <button 
-                      onClick={addCustomStamp} 
-                      className={`shrink-0 text-white px-4 rounded-xl font-black active:scale-95 transition-all shadow-md text-sm ${priority === 'stamps' ? 'bg-hkPost hover:bg-hkPost-dark' : 'bg-purple-600 hover:bg-purple-700'}`}
-                    >
-                      加入
-                    </button>
-                  </div>
-                  <div className="flex flex-wrap gap-2">
-                    {customStamps.length === 0 ? (
-                      <p className="text-[10px] font-bold text-slate-400 italic">尚未加入自訂面額 (如舊郵票面值)</p>
-                    ) : (
-                      customStamps.map(s => (
-                        <div key={s.id} className="flex items-center gap-1.5 bg-blue-100 dark:bg-blue-900/40 px-2.5 py-1 rounded-lg border border-blue-200 dark:border-blue-800 group animate-stamp-pop">
-                          <span className="text-sm font-black text-blue-700 dark:text-blue-300">{s.label}</span>
-                          <button onClick={() => removeCustomStamp(s.id)} className="text-blue-400 hover:text-red-500 transition-colors">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+                    <div className="grid grid-cols-4 gap-3 bg-slate-50 dark:bg-slate-800/40 p-4 rounded-2xl border border-slate-100 dark:border-slate-800">
+                      {DENOMINATIONS.map(d => {
+                        const isDisabled = disabledStamps.includes(d.id);
+                        return (
+                          <button key={d.id} onClick={() => toggleStamp(d.id)} className={`relative aspect-square rounded-xl flex items-center justify-center stamp-item-transition active:scale-75 shadow-sm border-2 text-[15px] font-black ${isDisabled ? 'bg-slate-100 dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-400 dark:text-slate-600 grayscale opacity-40 scale-95' : `${d.color} border-black/10 dark:border-white/10 text-slate-900 dark:text-slate-100 scale-100`}`}>
+                            {d.label}
+                            <div className={`absolute inset-0 flex items-center justify-center pointer-events-none overflow-hidden rounded-xl transition-all duration-300 ${isDisabled ? 'opacity-100 backdrop-blur-[1px]' : 'opacity-0'}`}>
+                               <div className="w-[120%] h-[2px] bg-red-500/50 rotate-45 absolute" style={{ transform: isDisabled ? 'rotate(45deg)' : 'rotate(0deg) scaleX(0)' }}></div>
+                               <div className="w-[120%] h-[2px] bg-red-500/50 -rotate-45 absolute" style={{ transform: isDisabled ? 'rotate(-45deg)' : 'rotate(0deg) scaleX(0)' }}></div>
+                            </div>
                           </button>
-                        </div>
-                      ))
-                    )}
+                        );
+                      })}
+                    </div>
+                  </div>
+
+                  {/* Custom Denominations */}
+                  <div className="space-y-3">
+                    <div className="flex items-center justify-between pl-1">
+                      <h3 className="text-xs font-black text-slate-400 uppercase tracking-widest">自訂郵票面額 (選填)</h3>
+                      <button onClick={() => setCustomStamps([])} className={`text-[10px] font-black px-2 py-0.5 rounded-lg uppercase transition-all ${priority === 'stamps' ? 'text-hkPost bg-green-50 dark:bg-green-900/20' : 'text-purple-600 bg-purple-50 dark:bg-purple-900/20'}`}>清空</button>
+                    </div>
+                    <div className="bg-slate-50 dark:bg-slate-800/40 p-4 rounded-2xl border border-slate-100 dark:border-slate-800 space-y-4">
+                      <div className="flex w-full gap-2">
+                        <input type="number" placeholder="輸入面額 (e.g. 1.7)" value={customInputValue} onChange={(e) => setCustomInputValue(e.target.value)}
+                          className={`flex-1 min-w-0 px-4 py-2 bg-white dark:bg-slate-900 rounded-xl border-2 border-slate-100 dark:border-slate-700 outline-none font-bold text-slate-800 dark:text-slate-100 transition-all text-sm ${priority === 'stamps' ? 'focus:border-hkPost' : 'focus:border-purple-500'}`}
+                        />
+                        <button onClick={addCustomStamp} className={`shrink-0 text-white px-5 rounded-xl font-black active:scale-95 transition-all shadow-md text-sm ${priority === 'stamps' ? 'bg-hkPost hover:bg-hkPost-dark' : 'bg-purple-600 hover:bg-purple-700'}`}>加入</button>
+                      </div>
+                      <div className="flex flex-wrap gap-2">
+                        {customStamps.length === 0 ? (
+                          <p className="text-[10px] font-bold text-slate-400 italic py-2">尚未加入自訂面額 (如紀念郵票)</p>
+                        ) : (
+                          customStamps.map(s => (
+                            <div key={s.id} className="flex items-center gap-1.5 bg-blue-100 dark:bg-blue-900/40 px-3 py-1.5 rounded-xl border border-blue-200 dark:border-blue-800 animate-stamp-pop">
+                              <span className="text-sm font-black text-blue-700 dark:text-blue-300">{s.label}</span>
+                              <button onClick={() => removeCustomStamp(s.id)} className="text-blue-400 hover:text-red-500 transition-colors">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+                              </button>
+                            </div>
+                          ))
+                        )}
+                      </div>
+                    </div>
                   </div>
                 </div>
 
-                <button onClick={() => setActiveTab('calc')} className={`w-full mt-2 py-3 text-white font-black rounded-xl active:scale-95 transition-all uppercase tracking-widest text-xs shadow-lg ${priority === 'stamps' ? 'bg-hkPost hover:bg-hkPost-dark' : 'bg-purple-600 hover:bg-purple-700'}`}>確認並返回</button>
+                {/* Fixed Footer Sticky Button */}
+                <div className="absolute bottom-0 left-0 right-0 p-4 bg-white/60 dark:bg-slate-900/60 backdrop-blur-xl border-t border-slate-100 dark:border-slate-800 z-20">
+                  <button onClick={() => setActiveTab('calc')} className={`w-full py-4 text-white font-black rounded-2xl active:scale-95 transition-all uppercase tracking-[0.2em] text-sm shadow-xl ${priority === 'stamps' ? 'bg-hkPost hover:bg-hkPost-dark shadow-green-500/20' : 'bg-purple-600 hover:bg-purple-700 shadow-purple-500/20'}`}>
+                    儲存並返回首頁
+                  </button>
+                </div>
               </div>
             )}
 
             {activeTab === 'about' && (
-              <div className="bg-white/90 dark:bg-slate-800/90 backdrop-blur-md rounded-2xl p-6 shadow-sm border border-slate-200 dark:border-slate-700 animate-in fade-in slide-in-from-bottom-2 duration-300">
-                <div className="flex items-center gap-3 mb-6">
-                  <div className="p-3 rounded-2xl shadow-lg bg-white dark:bg-slate-700 border border-slate-100 dark:border-slate-600">
-                    <svg className="w-10 h-10" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <rect x="5" y="20" width="90" height="60" rx="6" fill="white" stroke="#e2e8f0" strokeWidth="2"/>
+              <div className="flex-1 p-6 flex flex-col items-center justify-center space-y-8 animate-in fade-in zoom-in-95 duration-300">
+                <div className="p-6 rounded-[2.5rem] shadow-2xl bg-white dark:bg-slate-800 border-4 border-slate-50 dark:border-slate-700 relative">
+                    <svg className="w-24 h-24" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <rect x="5" y="20" width="90" height="60" rx="10" fill="white" stroke="#e2e8f0" strokeWidth="2"/>
                       <path d="M5 25 L50 60 L95 25" stroke="#cbd5e1" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round"/>
                       <circle cx="78" cy="72" r="22" fill="#facc15" />
                       <text x="78" y="80" textAnchor="middle" fontSize="26" fontWeight="900" fill="#854d0e">$</text>
                     </svg>
-                  </div>
-                  <div>
-                    <h2 className="text-2xl font-black text-hkPost-dark dark:text-slate-100 tracking-tight leading-none mb-1">關於</h2>
-                    <p className={`text-[10px] font-black uppercase tracking-widest ${priority === 'stamps' ? 'text-hkPost' : 'text-purple-600'}`}>郵費組合計算機</p>
-                  </div>
+                    <div className="absolute -bottom-2 -right-2 bg-hkPost text-white text-[10px] font-black px-3 py-1 rounded-full shadow-lg">V2.1</div>
                 </div>
-                <div className="space-y-4 text-slate-600 dark:text-slate-400 text-sm font-medium leading-relaxed">
-                  <p>這是一個極簡、智能的郵票組合計算工具。現已支援「自訂面額」，您可以加入任何非通用郵票的面值參與計算。</p>
-                  <div className="p-4 bg-slate-50 dark:bg-slate-900/50 rounded-xl border border-slate-100 dark:border-slate-700/50">
-                    <div className="flex items-center gap-2 mb-2">
-                      <svg className="w-4 h-4 text-blue-500" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L14.85 9.15L22 12L14.85 14.85L12 22L9.15 14.85L2 12L9.15 9.15L12 2Z"/></svg>
-                      <span className="text-[10px] font-black uppercase tracking-widest text-slate-400 dark:text-slate-500">自訂功能</span>
-                    </div>
-                    <p className="text-xs">您可以加入上限為 $50 的自訂面額，系統會以「藍色」區分布置在您的方案中。</p>
-                  </div>
-                  <p className="text-center italic opacity-70 pt-2 border-t border-slate-100 dark:border-slate-700">「僅供參考，純屬好玩 🤡」</p>
+                <div className="text-center space-y-4 max-w-xs">
+                    <h2 className="text-3xl font-black text-slate-800 dark:text-white tracking-tighter">郵費組合計算機</h2>
+                    <p className="text-sm text-slate-500 dark:text-slate-400 leading-relaxed font-medium">智能演算法為您找到最省郵票數、最少面額種類的完美貼法。支援 PWA 離線使用。</p>
                 </div>
-                <button onClick={() => setActiveTab('calc')} className={`w-full mt-8 py-3 text-white font-black rounded-xl active:scale-95 transition-all uppercase tracking-widest text-xs ${priority === 'stamps' ? 'bg-hkPost' : 'bg-purple-600'}`}>返回首頁</button>
+                <div className="grid grid-cols-2 gap-3 w-full max-w-xs">
+                   <div className="p-4 bg-white dark:bg-slate-800 rounded-2xl border border-slate-100 dark:border-slate-700 text-center">
+                      <p className="text-[10px] font-black text-slate-400 uppercase mb-1">自訂功能</p>
+                      <p className="text-xs font-bold text-blue-500">支援紀念郵票</p>
+                   </div>
+                   <div className="p-4 bg-white dark:bg-slate-800 rounded-2xl border border-slate-100 dark:border-slate-700 text-center">
+                      <p className="text-[10px] font-black text-slate-400 uppercase mb-1">離線支援</p>
+                      <p className="text-xs font-bold text-hkPost">PWA 可安裝</p>
+                   </div>
+                </div>
+                <button onClick={() => setActiveTab('calc')} className={`w-full max-w-xs py-4 text-white font-black rounded-2xl active:scale-95 transition-all uppercase tracking-widest text-xs shadow-lg ${priority === 'stamps' ? 'bg-hkPost' : 'bg-purple-600'}`}>返回</button>
               </div>
             )}
           </div>
-
-          <footer onClick={() => setActiveTab('about')} className="w-full py-6 flex flex-col items-center gap-2 opacity-60 hover:opacity-100 transition-opacity cursor-pointer group">
-            <div className="h-[1px] w-12 bg-slate-300 dark:bg-slate-700/50 mb-2"></div>
-            <p className={`text-[10px] font-black text-slate-400 dark:text-slate-500 tracking-[0.2em] uppercase transition-colors ${priority === 'stamps' ? 'group-hover:text-hkPost' : 'group-hover:text-purple-600'}`}>Just for fun 🤡</p>
-            <div className="flex items-center gap-1.5">
-              <p className={`text-[9px] font-bold text-slate-400 dark:text-slate-600 uppercase tracking-widest transition-colors ${priority === 'stamps' ? 'group-hover:text-hkPost' : 'group-hover:text-purple-600'}`}>Powered by Google Gemini</p>
-            </div>
-          </footer>
         </div>
       );
     }
