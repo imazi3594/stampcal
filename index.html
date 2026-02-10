@@ -28,15 +28,6 @@
             },
             deepPurple: '#0a0118',
             deepBlue: '#010413',
-          },
-          keyframes: {
-            'subtle-bounce': {
-              '0%, 100%': { transform: 'translateY(0)' },
-              '50%': { transform: 'translateY(-3px)' },
-            }
-          },
-          animation: {
-            'subtle-bounce': 'subtle-bounce 2s infinite ease-in-out',
           }
         }
       }
@@ -168,7 +159,8 @@
         );
       };
 
-      const handleInstallClick = async () => {
+      const handleInstallClick = async (e) => {
+        e.stopPropagation();
         if (!deferredPrompt) return;
         deferredPrompt.prompt();
         const { outcome } = await deferredPrompt.userChoice;
@@ -404,18 +396,6 @@
                   </div>
 
                   <div className="min-h-[28px] flex flex-col gap-1.5">
-                    {/* Contextual Install Prompt (Option 1) */}
-                    {deferredPrompt && !isStandalone && bestCombination && (
-                      <button 
-                        onClick={handleInstallClick}
-                        className={`animate-subtle-bounce flex items-center justify-center gap-2 py-1.5 px-3 rounded-xl border-2 border-dashed transition-all active:scale-95 bg-white/80 dark:bg-slate-800/80 shadow-sm
-                          ${priority === 'stamps' ? 'border-hkPost/40 text-hkPost' : 'border-purple-500/40 text-purple-600'}`}
-                      >
-                        <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
-                        <span className="text-[11px] font-black uppercase tracking-tight">安裝到主螢幕，離線即開即用</span>
-                      </button>
-                    )}
-
                     {unavailableStamps.length > 0 && (
                       <div className="flex flex-wrap gap-x-2 gap-y-1.5 items-center px-2 bg-red-50/50 dark:bg-red-900/10 py-1.5 rounded-lg border border-red-100 dark:border-red-900/30">
                         <span className="text-[11px] font-black text-red-600 dark:text-red-400 uppercase tracking-tight shrink-0">目前缺貨:</span>
@@ -552,7 +532,6 @@
 
                 <div className="space-y-4 text-slate-600 dark:text-slate-400 text-sm font-medium leading-relaxed">
                   <p>這是一個極簡、智能的郵票組合計算工具。旨在協助用戶在多樣化的面額選擇中，根據實際郵費需求，快速尋找最合適的郵票組合。</p>
-                  <p className="text-xs italic opacity-80">小技巧：只有在計算出結果時，您才會看到「安裝到桌面」的快速提示，這是我們特別為頻繁使用的用戶設計的優化。</p>
                   
                   <div className="p-4 bg-slate-50 dark:bg-slate-900/50 rounded-xl border border-slate-100 dark:border-slate-700/50">
                     <div className="flex items-center gap-2 mb-2">
@@ -573,6 +552,17 @@
                     </div>
                   </div>
 
+                  {/* Powered by Gemini Credit Section */}
+                  <div className="p-4 bg-slate-50 dark:bg-slate-900/50 rounded-xl border border-slate-100 dark:border-slate-700/50">
+                    <div className="flex items-center gap-2 mb-2">
+                      <svg className={`w-4 h-4 ${priority === 'stamps' ? 'text-hkPost' : 'text-purple-500'}`} viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 2L14.85 9.15L22 12L14.85 14.85L12 22L9.15 14.85L2 12L9.15 9.15L12 2Z" />
+                      </svg>
+                      <span className="text-[10px] font-black uppercase tracking-widest text-slate-400 dark:text-slate-500">技術支援</span>
+                    </div>
+                    <p className="text-xs">本應用程式由 <span className={`${priority === 'stamps' ? 'text-hkPost' : 'text-purple-600'} font-bold`}>Google Gemini</span> 模型輔助開發，實現了精確的組合優化算法與流暢的介面體驗。</p>
+                  </div>
+
                   <p className="text-center italic opacity-70 pt-2 border-t border-slate-100 dark:border-slate-700">「僅供參考，純屬好玩 🤡」</p>
                 </div>
 
@@ -591,6 +581,18 @@
             className="w-full py-6 flex flex-col items-center gap-2 opacity-60 hover:opacity-100 transition-opacity cursor-pointer group"
           >
             <div className="h-[1px] w-12 bg-slate-300 dark:bg-slate-700/50 mb-2"></div>
+            
+            {deferredPrompt && !isStandalone && (
+              <button 
+                onClick={handleInstallClick}
+                className={`mb-2 flex items-center gap-2 px-4 py-1.5 rounded-full border border-dashed transition-all active:scale-95 text-[11px] font-black uppercase tracking-wider
+                  ${priority === 'stamps' ? 'border-hkPost/40 text-hkPost bg-green-50/50' : 'border-purple-500/40 text-purple-600 bg-purple-50/50'}`}
+              >
+                <svg className="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
+                安裝到桌面
+              </button>
+            )}
+
             <p className={`text-[10px] font-black text-slate-400 dark:text-slate-500 tracking-[0.2em] uppercase transition-colors ${priority === 'stamps' ? 'group-hover:text-hkPost' : 'group-hover:text-purple-600'}`}>
               Just for fun 🤡
             </p>
