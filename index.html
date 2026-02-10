@@ -210,15 +210,11 @@
           triggerWarning('最高面額為 $50');
           return;
         }
-        // Round to 1 decimal place
         const roundedVal = Math.round(val * 10) / 10;
-        
-        // Check for duplicates in standard
         if (DENOMINATIONS.some(d => d.value === roundedVal)) {
           triggerWarning('此面額已存在於通用郵票中');
           return;
         }
-        // Check for duplicates in custom
         if (customStamps.some(s => s.value === roundedVal)) {
           triggerWarning('此面額已在自訂清單中');
           return;
@@ -286,8 +282,6 @@
         if (isNaN(val) || val <= 0) return null;
         
         const target = Math.round(val * 10);
-        
-        // Combine standard and custom stamps
         const allAvailable = [
           ...DENOMINATIONS.filter(d => !disabledStamps.includes(d.id)),
           ...customStamps
@@ -383,7 +377,6 @@
       return (
         <div className={`app-container flex flex-col items-center justify-between ${bgClasses}`}>
           
-          {/* Warning Toast */}
           {warning && (
             <div className="fixed top-6 left-1/2 -translate-x-1/2 z-[100] animate-slide-down">
               <div className="bg-red-500/90 backdrop-blur-md text-white px-6 py-3 rounded-2xl shadow-2xl flex items-center gap-3 border border-red-400/50">
@@ -537,7 +530,6 @@
 
             {activeTab === 'settings' && (
               <div className="space-y-4">
-                {/* Priority Mode */}
                 <div className="bg-white/90 dark:bg-slate-800/90 backdrop-blur-md rounded-2xl p-4 shadow-sm border border-slate-200 dark:border-slate-700">
                   <div className="flex items-center gap-2 mb-4">
                     <ThemeBar priority={priority} />
@@ -555,7 +547,6 @@
                   </div>
                 </div>
 
-                {/* Stock Settings */}
                 <div className="bg-white/90 dark:bg-slate-800/90 backdrop-blur-md rounded-2xl p-4 shadow-sm border border-slate-200 dark:border-slate-700">
                   <div className="flex items-center justify-between mb-4">
                     <div className="flex items-center gap-2">
@@ -584,8 +575,7 @@
                   </div>
                 </div>
 
-                {/* Custom Denominations */}
-                <div className="bg-white/90 dark:bg-slate-800/90 backdrop-blur-md rounded-2xl p-4 shadow-sm border border-slate-200 dark:border-slate-700">
+                <div className="bg-white/90 dark:bg-slate-800/90 backdrop-blur-md rounded-2xl p-4 shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
                   <div className="flex items-center justify-between mb-3">
                     <div className="flex items-center gap-2">
                       <ThemeBar priority={priority} />
@@ -598,17 +588,17 @@
                       重設
                     </button>
                   </div>
-                  <div className="flex gap-2 mb-4">
+                  <div className="flex w-full gap-2 mb-4">
                     <input 
                       type="number" 
-                      placeholder="輸入面額 (上限 $50)" 
+                      placeholder="面額 (上限 $50)" 
                       value={customInputValue}
                       onChange={(e) => setCustomInputValue(e.target.value)}
-                      className={`flex-1 px-4 py-2 bg-slate-50 dark:bg-slate-900 rounded-xl border-2 border-slate-100 dark:border-slate-700 outline-none font-bold text-slate-800 dark:text-slate-100 transition-all focus:border-opacity-100 ${priority === 'stamps' ? 'focus:border-hkPost' : 'focus:border-purple-500'}`}
+                      className={`flex-1 min-w-0 px-3 py-2 bg-slate-50 dark:bg-slate-900 rounded-xl border-2 border-slate-100 dark:border-slate-700 outline-none font-bold text-slate-800 dark:text-slate-100 transition-all focus:border-opacity-100 text-sm ${priority === 'stamps' ? 'focus:border-hkPost' : 'focus:border-purple-500'}`}
                     />
                     <button 
                       onClick={addCustomStamp} 
-                      className={`text-white px-5 rounded-xl font-black active:scale-95 transition-all shadow-md ${priority === 'stamps' ? 'bg-hkPost hover:bg-hkPost-dark' : 'bg-purple-600 hover:bg-purple-700'}`}
+                      className={`shrink-0 text-white px-4 rounded-xl font-black active:scale-95 transition-all shadow-md text-sm ${priority === 'stamps' ? 'bg-hkPost hover:bg-hkPost-dark' : 'bg-purple-600 hover:bg-purple-700'}`}
                     >
                       加入
                     </button>
