@@ -651,22 +651,22 @@
                    </button>
                 </div>
 
-                <div className="flex-1 overflow-y-auto p-4 space-y-6 pb-[calc(7rem+env(safe-area-inset-bottom))] custom-scrollbar">
-                  <div className="space-y-3">
+                <div className="flex-1 overflow-y-auto p-4 space-y-4 pb-[calc(7rem+env(safe-area-inset-bottom))] custom-scrollbar">
+                  <div className="space-y-2">
                     <h3 className="text-sm font-black text-slate-600 dark:text-slate-300 uppercase tracking-widest pl-1">方案優先順序</h3>
-                    <div className="grid grid-cols-2 gap-3">
-                      <button onClick={() => setPriority('stamps')} className={`flex flex-col items-center justify-center p-4 rounded-2xl border-2 transition-all shadow-sm ${priority === 'stamps' ? 'border-hkPost bg-green-50 dark:bg-green-900/20' : 'border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/40 opacity-60'}`}>
+                    <div className="grid grid-cols-2 gap-2">
+                      <button onClick={() => setPriority('stamps')} className={`flex flex-col items-center justify-center p-3 rounded-2xl border-2 transition-all shadow-sm ${priority === 'stamps' ? 'border-hkPost bg-green-50 dark:bg-green-900/20' : 'border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/40 opacity-60'}`}>
                         <span className={`text-sm font-black mb-1 ${priority === 'stamps' ? 'text-hkPost dark:text-green-400' : 'text-slate-500 dark:text-slate-400'}`}>數量優先</span>
                         <span className="text-[10px] text-slate-400 dark:text-slate-500 font-bold text-center">使用最少數量郵票</span>
                       </button>
-                      <button onClick={() => setPriority('varieties')} className={`flex flex-col items-center justify-center p-4 rounded-2xl border-2 transition-all shadow-sm ${priority === 'varieties' ? 'border-purple-500 bg-purple-50 dark:bg-purple-900/20' : 'border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/40 opacity-60'}`}>
+                      <button onClick={() => setPriority('varieties')} className={`flex flex-col items-center justify-center p-3 rounded-2xl border-2 transition-all shadow-sm ${priority === 'varieties' ? 'border-purple-500 bg-purple-50 dark:bg-purple-900/20' : 'border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/40 opacity-60'}`}>
                         <span className={`text-sm font-black mb-1 ${priority === 'varieties' ? 'text-purple-600 dark:text-purple-400' : 'text-slate-500 dark:text-slate-400'}`}>面值優先</span>
                         <span className="text-[10px] text-slate-400 dark:text-slate-500 font-bold text-center">減少面額種類</span>
                       </button>
                     </div>
                   </div>
 
-                  <div className="space-y-3">
+                  <div className="space-y-2">
                     <div className="flex items-center justify-between pl-1">
                       <div>
                         <h3 className="text-sm font-black text-slate-600 dark:text-slate-300 uppercase tracking-widest">通用郵票庫存</h3>
@@ -674,7 +674,7 @@
                       </div>
                       <button onClick={() => setDisabledStamps([])} className={`text-xs font-black px-3 py-1 rounded-lg uppercase transition-all ${priority === 'stamps' ? 'text-hkPost bg-green-50 dark:bg-green-900/20' : 'text-purple-600 bg-purple-50 dark:bg-purple-900/20'}`}>重設</button>
                     </div>
-                    <div className="grid grid-cols-4 gap-3 bg-slate-50 dark:bg-slate-800/40 p-4 rounded-2xl border border-slate-100 dark:border-slate-800">
+                    <div className="grid grid-cols-4 gap-2 bg-slate-50 dark:bg-slate-800/40 p-3 rounded-2xl border border-slate-100 dark:border-slate-800">
                       {DENOMINATIONS.map(d => {
                         const isDisabled = disabledStamps.includes(d.id);
                         return (
@@ -690,12 +690,12 @@
                     </div>
                   </div>
 
-                  <div className="space-y-3">
+                  <div className="space-y-2">
                     <div className="flex items-center justify-between pl-1">
                       <h3 className="text-sm font-black text-slate-600 dark:text-slate-300 uppercase tracking-widest">自訂郵票面額 (選填)</h3>
                       <button onClick={() => setCustomStamps([])} className={`text-xs font-black px-3 py-1 rounded-lg uppercase transition-all ${priority === 'stamps' ? 'text-hkPost bg-green-50 dark:bg-green-900/20' : 'text-purple-600 bg-purple-50 dark:bg-purple-900/20'}`}>清空</button>
                     </div>
-                    <div className="bg-slate-50 dark:bg-slate-800/40 p-4 rounded-2xl border border-slate-100 dark:border-slate-800 space-y-4">
+                    <div className="bg-slate-50 dark:bg-slate-800/40 p-3 rounded-2xl border border-slate-100 dark:border-slate-800 space-y-3">
                       <div className="flex w-full gap-2">
                         <input type="text" inputMode="decimal" placeholder="輸入面額 (e.g. 1.7)" value={customInputValue} onChange={(e) => {
                           const val = e.target.value;
