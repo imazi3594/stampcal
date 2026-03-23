@@ -664,13 +664,13 @@
                   <div className="space-y-2">
                     <h3 className="text-sm font-black text-slate-600 dark:text-slate-300 uppercase tracking-widest pl-1">方案優先順序</h3>
                     <div className="grid grid-cols-2 gap-2">
-                      <button onClick={() => setPriority('stamps')} className={`flex flex-col items-center justify-center p-3 rounded-2xl border-2 transition-all shadow-sm ${priority === 'stamps' ? 'border-hkPost bg-green-50 dark:bg-green-900/20' : 'border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/40 opacity-60'}`}>
-                        <span className={`text-sm font-black mb-1 ${priority === 'stamps' ? 'text-hkPost dark:text-green-400' : 'text-slate-500 dark:text-slate-400'}`}>數量優先</span>
-                        <span className="text-[10px] text-slate-400 dark:text-slate-500 font-bold text-center">使用最少數量郵票</span>
+                      <button onClick={() => setPriority('stamps')} className={`flex flex-col items-center justify-center p-3 rounded-2xl border-2 transition-all shadow-sm ${priority === 'stamps' ? 'border-hkPost bg-green-50 dark:bg-green-900/20' : 'border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700/50 hover:border-slate-300 dark:hover:border-slate-600'}`}>
+                        <span className={`text-sm font-black mb-1 ${priority === 'stamps' ? 'text-hkPost dark:text-green-400' : 'text-slate-600 dark:text-slate-300'}`}>數量優先</span>
+                        <span className={`text-[10px] font-bold text-center ${priority === 'stamps' ? 'text-green-700/70 dark:text-green-400/70' : 'text-slate-400 dark:text-slate-500'}`}>使用最少數量郵票</span>
                       </button>
-                      <button onClick={() => setPriority('varieties')} className={`flex flex-col items-center justify-center p-3 rounded-2xl border-2 transition-all shadow-sm ${priority === 'varieties' ? 'border-purple-500 bg-purple-50 dark:bg-purple-900/20' : 'border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/40 opacity-60'}`}>
-                        <span className={`text-sm font-black mb-1 ${priority === 'varieties' ? 'text-purple-600 dark:text-purple-400' : 'text-slate-500 dark:text-slate-400'}`}>面值優先</span>
-                        <span className="text-[10px] text-slate-400 dark:text-slate-500 font-bold text-center">減少面額種類</span>
+                      <button onClick={() => setPriority('varieties')} className={`flex flex-col items-center justify-center p-3 rounded-2xl border-2 transition-all shadow-sm ${priority === 'varieties' ? 'border-purple-500 bg-purple-50 dark:bg-purple-900/20' : 'border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700/50 hover:border-slate-300 dark:hover:border-slate-600'}`}>
+                        <span className={`text-sm font-black mb-1 ${priority === 'varieties' ? 'text-purple-600 dark:text-purple-400' : 'text-slate-600 dark:text-slate-300'}`}>面值優先</span>
+                        <span className={`text-[10px] font-bold text-center ${priority === 'varieties' ? 'text-purple-700/70 dark:text-purple-400/70' : 'text-slate-400 dark:text-slate-500'}`}>減少面額種類</span>
                       </button>
                     </div>
                   </div>
