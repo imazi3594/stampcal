@@ -514,7 +514,7 @@
                         {priority === 'stamps' ? (
                           <><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="mb-0.5"><rect width="8" height="8" x="3" y="3" rx="1"/><rect width="8" height="8" x="13" y="3" rx="1"/><rect width="8" height="8" x="3" y="13" rx="1"/><rect width="8" height="8" x="13" y="13" rx="1"/></svg><span className="text-[10px] font-black uppercase tracking-tighter">數量優先</span></>
                         ) : (
-                          <><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="mb-0.5"><rect width="20" height="12" x="2" y="6" rx="2"/><circle cx="12" cy="12" r="2"/><path d="M6 12h.01M18 12h.01"/></svg><span className="text-[10px] font-black uppercase tracking-tighter">面值優先</span></>
+                          <><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="mb-0.5"><circle cx="12" cy="12" r="10"/><path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"/><path d="M12 18V6"/></svg><span className="text-[10px] font-black uppercase tracking-tighter">面值優先</span></>
                         )}
                       </button>
                     </div>
@@ -853,10 +853,10 @@
                   {/* Introduction */}
                   <section className="space-y-3">
                     <div className="flex items-center gap-2">
-                      <div className="w-1 h-4 bg-hkPost rounded-full"></div>
-                      <h3 className="text-sm font-black text-slate-800 dark:text-slate-100 uppercase tracking-widest">關於本程式</h3>
+                      <div className="w-1 h-5 bg-hkPost rounded-full"></div>
+                      <h3 className="text-base font-black text-slate-800 dark:text-slate-100 uppercase tracking-widest">關於本程式</h3>
                     </div>
-                    <p className="text-sm text-slate-500 dark:text-slate-400 leading-relaxed font-medium">
+                    <p className="text-base text-slate-600 dark:text-slate-400 leading-relaxed font-medium">
                       這是一個郵票組合的智能計算工具。當您手邊有多種不同面額的郵票，卻不知道如何組合成目標郵費時，本程式能即時為您運算最理想的貼法。
                     </p>
                   </section>
@@ -864,51 +864,48 @@
                   {/* Algorithm / Logic */}
                   <section className="space-y-4">
                     <div className="flex items-center gap-2">
-                      <div className="w-1 h-4 bg-purple-500 rounded-full"></div>
-                      <h3 className="text-sm font-black text-slate-800 dark:text-slate-100 uppercase tracking-widest">計算邏輯與演算法</h3>
+                      <div className="w-1 h-5 bg-purple-500 rounded-full"></div>
+                      <h3 className="text-base font-black text-slate-800 dark:text-slate-100 uppercase tracking-widest">計算邏輯與演算法</h3>
                     </div>
-                    <div className="bg-slate-50 dark:bg-slate-900/50 p-4 rounded-2xl border border-slate-100 dark:border-slate-800 space-y-4">
-                      <div className="space-y-1.5">
-                        <h4 className="text-xs font-black text-slate-700 dark:text-slate-200 flex items-center gap-2">
-                          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="text-hkPost"><path d="M12 2v10"/><path d="m16 8-4 4-4-4"/></svg>
-                          動態規劃 (Dynamic Programming)
-                        </h4>
-                        <p className="text-[13px] text-slate-500 dark:text-slate-400 leading-relaxed">
-                          程式採用 DP 演算法，將目標金額拆解為最小子問題。這不是簡單的隨機湊數，而是遍歷所有可能組合後，根據您的偏好篩選出最優解。
-                        </p>
-                      </div>
-                      <div className="h-[1px] bg-slate-200 dark:bg-slate-800"></div>
-                      <div className="grid grid-cols-2 gap-4">
-                        <div className="space-y-1">
-                          <h5 className="text-[11px] font-black text-hkPost uppercase tracking-tighter">數量優先</h5>
-                          <p className="text-[11px] text-slate-500 dark:text-slate-500 font-bold">優先尋找「最少郵票總數」的方案，節省信封空間。</p>
+                    <div className="bg-slate-50 dark:bg-slate-900/50 p-5 rounded-3xl border border-slate-100 dark:border-slate-800">
+                      <div className="grid grid-cols-1 gap-5">
+                        <div className="space-y-1.5">
+                          <h5 className="text-sm font-black text-hkPost flex items-center gap-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M7 7h.01"/><path d="M17 7h.01"/><path d="M7 17h.01"/><path d="M17 17h.01"/></svg>
+                            數量優先
+                          </h5>
+                          <p className="text-sm text-slate-600 dark:text-slate-400 font-bold">優先尋找「最少郵票總數」的方案，節省信封空間。</p>
                         </div>
-                        <div className="space-y-1">
-                          <h5 className="text-[11px] font-black text-purple-500 uppercase tracking-tighter">面值優先</h5>
-                          <p className="text-[11px] text-slate-500 dark:text-slate-500 font-bold">在確保總數合理的同時，盡量減少使用的「面額種類」。</p>
+                        <div className="h-[1px] bg-slate-200 dark:bg-slate-800"></div>
+                        <div className="space-y-1.5">
+                          <h5 className="text-sm font-black text-purple-500 flex items-center gap-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"/><path d="M12 18V6"/></svg>
+                            面值優先
+                          </h5>
+                          <p className="text-sm text-slate-600 dark:text-slate-400 font-bold">在確保總數合理的同時，盡量減少使用的「面額種類」。</p>
                         </div>
                       </div>
                     </div>
                   </section>
 
                   {/* Key Features List */}
-                  <section className="space-y-3">
+                  <section className="space-y-4">
                     <div className="flex items-center gap-2">
-                      <div className="w-1 h-4 bg-slate-400 rounded-full"></div>
-                      <h3 className="text-sm font-black text-slate-800 dark:text-slate-100 uppercase tracking-widest">核心功能</h3>
+                      <div className="w-1 h-5 bg-slate-400 rounded-full"></div>
+                      <h3 className="text-base font-black text-slate-800 dark:text-slate-100 uppercase tracking-widest">核心功能</h3>
                     </div>
-                    <ul className="grid grid-cols-1 gap-3">
+                    <ul className="grid grid-cols-1 gap-4">
                       {[
                         { title: "自訂面額", desc: "支援紀念郵票、特別版郵票輸入", icon: "✨" },
                         { title: "庫存管理", desc: "可隨時停用缺貨中的通用郵票面額", icon: "📦" },
                         { title: "離線使用", desc: "採用 PWA 技術，沒網路也能照常運算", icon: "🌐" },
                         { title: "深色模式", desc: "完美支援系統深色介面，呵護雙眼", icon: "🌙" }
                       ].map((f, i) => (
-                        <li key={i} className="flex items-start gap-4 bg-white dark:bg-slate-900 p-3 rounded-xl border border-slate-100 dark:border-slate-800 shadow-sm">
-                          <span className="text-xl">{f.icon}</span>
-                          <div className="space-y-0.5">
-                            <p className="text-xs font-black text-slate-800 dark:text-slate-200">{f.title}</p>
-                            <p className="text-[11px] text-slate-500 dark:text-slate-500 font-medium">{f.desc}</p>
+                        <li key={i} className="flex items-center gap-4 bg-white dark:bg-slate-900 p-4 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-sm">
+                          <span className="text-2xl">{f.icon}</span>
+                          <div className="space-y-1">
+                            <p className="text-sm font-black text-slate-800 dark:text-slate-200">{f.title}</p>
+                            <p className="text-xs text-slate-500 dark:text-slate-400 font-medium">{f.desc}</p>
                           </div>
                         </li>
                       ))}
@@ -919,7 +916,7 @@
                   <div className="pt-6 border-t border-slate-100 dark:border-slate-800 flex flex-col items-center space-y-4">
                     <GeminiCredit className="opacity-100 scale-125 mb-2" animated={true} />
                     <div className="text-center">
-                      <p className="text-[10px] text-slate-400 dark:text-slate-600 font-bold max-w-[200px] leading-relaxed italic">
+                      <p className="text-xs text-slate-400 dark:text-slate-500 font-bold max-w-[250px] leading-relaxed italic">
                         "本應用之 UI 介面及演算法架構由 Google Gemini 3 系列模型驅動開發而成。"
                       </p>
                     </div>
@@ -928,24 +925,24 @@
                       {deferredPrompt && !isStandalone && (
                         <button 
                           onClick={handleInstallClick}
-                          className={`w-full py-3 bg-white/40 dark:bg-slate-800/40 backdrop-blur-sm text-slate-600 dark:text-slate-300 font-black rounded-2xl active:scale-95 transition-all uppercase tracking-widest text-[11px] shadow-sm border-2 border-dashed border-slate-300 dark:border-slate-700 flex items-center justify-center gap-2 ${priority === 'stamps' ? 'hover:text-hkPost hover:border-hkPost/50' : 'hover:text-purple-600 hover:border-purple-500/50'}`}
+                          className={`w-full py-3.5 bg-white/40 dark:bg-slate-800/40 backdrop-blur-sm text-slate-600 dark:text-slate-300 font-black rounded-2xl active:scale-95 transition-all uppercase tracking-widest text-xs shadow-sm border-2 border-dashed border-slate-300 dark:border-slate-700 flex items-center justify-center gap-2 ${priority === 'stamps' ? 'hover:text-hkPost hover:border-hkPost/50' : 'hover:text-purple-600 hover:border-purple-500/50'}`}
                         >
-                          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
                           安裝至手機桌面
                         </button>
                       )}
                       <div className="grid grid-cols-2 gap-3 w-full">
-                        <button onClick={handleShare} className="flex-1 py-3 bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 font-black rounded-2xl active:scale-95 transition-all uppercase tracking-widest text-[11px] shadow-sm flex items-center justify-center gap-2">
-                          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
+                        <button onClick={handleShare} className="flex-1 py-3.5 bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 font-black rounded-2xl active:scale-95 transition-all uppercase tracking-widest text-xs shadow-sm flex items-center justify-center gap-2">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
                           分享程式
                         </button>
-                        <button onClick={() => setActiveTab('calc')} className={`flex-1 py-3 text-white font-black rounded-2xl active:scale-95 transition-all uppercase tracking-widest text-[11px] shadow-xl ${priority === 'stamps' ? 'bg-hkPost shadow-green-500/20' : 'bg-purple-600 shadow-purple-500/20'}`}>
+                        <button onClick={() => setActiveTab('calc')} className={`flex-1 py-3.5 text-white font-black rounded-2xl active:scale-95 transition-all uppercase tracking-widest text-xs shadow-xl ${priority === 'stamps' ? 'bg-hkPost shadow-green-500/20' : 'bg-purple-600 shadow-purple-500/20'}`}>
                           返回首頁
                         </button>
                       </div>
                     </div>
                     
-                    <p className="text-[9px] font-black text-slate-300 dark:text-slate-700 tracking-[0.4em] uppercase">Built with 💚🤖</p>
+                    <p className="text-[11px] font-black text-slate-300 dark:text-slate-700 tracking-[0.4em] uppercase">Built with 💚🤖</p>
                   </div>
                 </div>
               </div>
