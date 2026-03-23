@@ -697,7 +697,12 @@
                     </div>
                     <div className="bg-slate-50 dark:bg-slate-800/40 p-4 rounded-2xl border border-slate-100 dark:border-slate-800 space-y-4">
                       <div className="flex w-full gap-2">
-                        <input type="number" placeholder="輸入面額 (e.g. 1.7)" value={customInputValue} onChange={(e) => setCustomInputValue(e.target.value)}
+                        <input type="text" inputMode="decimal" placeholder="輸入面額 (e.g. 1.7)" value={customInputValue} onChange={(e) => {
+                          const val = e.target.value;
+                          if (val === '' || /^\d{0,2}(\.\d{0,1})?$/.test(val)) {
+                            setCustomInputValue(val);
+                          }
+                        }}
                           className={`flex-1 min-w-0 px-4 py-2 bg-white dark:bg-slate-900 rounded-xl border-2 border-slate-100 dark:border-slate-700 outline-none font-bold text-slate-800 dark:text-slate-100 transition-all text-sm ${priority === 'stamps' ? 'focus:border-hkPost' : 'focus:border-purple-500'}`}
                         />
                         <button onClick={addCustomStamp} className={`shrink-0 text-white px-5 rounded-xl font-black active:scale-95 transition-all shadow-md text-sm ${priority === 'stamps' ? 'bg-hkPost hover:bg-hkPost-dark' : 'bg-purple-600 hover:bg-purple-700'}`}>加入</button>
