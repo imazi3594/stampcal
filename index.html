@@ -186,6 +186,32 @@
         return saved ? JSON.parse(saved) : [];
       });
 
+      const handleTabChange = (tab) => {
+        if (tab === 'calc' && activeTab !== 'calc') {
+          window.history.back();
+        } else if (tab !== activeTab) {
+          window.history.pushState({ tab }, '');
+          setActiveTab(tab);
+        }
+      };
+
+      useEffect(() => {
+        if (!window.history.state || !window.history.state.tab) {
+          window.history.replaceState({ tab: 'calc' }, '');
+        }
+
+        const handlePopState = (event) => {
+          if (event.state && event.state.tab) {
+            setActiveTab(event.state.tab);
+          } else {
+            setActiveTab('calc');
+          }
+        };
+
+        window.addEventListener('popstate', handlePopState);
+        return () => window.removeEventListener('popstate', handlePopState);
+      }, []);
+
       useEffect(() => {
         if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true) {
           setIsStandalone(true);
@@ -476,7 +502,7 @@
                     <div className="flex items-center gap-2">
                       <ThemeBar priority={priority} />
                       <h2 className="text-lg font-black text-slate-800 dark:text-slate-100 tracking-tight">郵費組合計算機</h2>
-                      <button onClick={() => setActiveTab('about')} className="p-1 active:scale-95 transition-all text-slate-400 hover:text-slate-600 dark:text-slate-500 dark:hover:text-slate-300" title="關於">
+                      <button onClick={() => handleTabChange('about')} className="p-1 active:scale-95 transition-all text-slate-400 hover:text-slate-600 dark:text-slate-500 dark:hover:text-slate-300" title="關於">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg>
                       </button>
                     </div>
@@ -488,7 +514,7 @@
                           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
                         )}
                       </button>
-                      <button onClick={() => setActiveTab('settings')} className={`p-1.5 active:scale-95 transition-all ${priority === 'stamps' ? 'text-hkPost' : 'text-purple-500'}`}>
+                      <button onClick={() => handleTabChange('settings')} className={`p-1.5 active:scale-95 transition-all ${priority === 'stamps' ? 'text-hkPost' : 'text-purple-500'}`}>
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>
                       </button>
                     </div>
@@ -612,7 +638,7 @@
                         <p className="text-xs font-bold text-slate-500 dark:text-slate-400">請到設定檢查郵票庫存</p>
                       </div>
                       <button 
-                        onClick={() => setActiveTab('settings')}
+                        onClick={() => handleTabChange('settings')}
                         className="px-6 py-2.5 bg-red-500 hover:bg-red-600 text-white rounded-xl font-black text-xs uppercase tracking-widest transition-all active:scale-95 shadow-lg shadow-red-500/20"
                       >
                         前往設定
@@ -655,7 +681,7 @@
                      <ThemeBar priority={priority} />
                      <h2 className="text-xl font-black text-slate-800 dark:text-slate-100 tracking-tight">偏好設定</h2>
                    </div>
-                   <button onClick={() => setActiveTab('calc')} className="p-2 text-slate-400 hover:text-slate-600 dark:text-slate-500">
+                   <button onClick={() => handleTabChange('calc')} className="p-2 text-slate-400 hover:text-slate-600 dark:text-slate-500">
                       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
                    </button>
                 </div>
@@ -739,7 +765,7 @@
                 </div>
 
                 <div className="absolute bottom-0 left-0 right-0 p-4 safe-bottom-padding bg-white/60 dark:bg-slate-900/60 backdrop-blur-xl border-t border-slate-100 dark:border-slate-800 z-20">
-                  <button onClick={() => setActiveTab('calc')} className={`w-full py-4 text-white font-black rounded-2xl active:scale-95 transition-all uppercase tracking-[0.2em] text-sm shadow-xl ${priority === 'stamps' ? 'bg-hkPost hover:bg-hkPost-dark shadow-green-500/20' : 'bg-purple-600 hover:bg-purple-700 shadow-purple-500/20'}`}>
+                  <button onClick={() => handleTabChange('calc')} className={`w-full py-4 text-white font-black rounded-2xl active:scale-95 transition-all uppercase tracking-[0.2em] text-sm shadow-xl ${priority === 'stamps' ? 'bg-hkPost hover:bg-hkPost-dark shadow-green-500/20' : 'bg-purple-600 hover:bg-purple-700 shadow-purple-500/20'}`}>
                     儲存並返回首頁
                   </button>
                 </div>
@@ -760,7 +786,7 @@
                     }
                   `}</style>
                   <div className="absolute top-4 left-4 z-20">
-                    <button onClick={() => setActiveTab('calc')} className="p-2 bg-white/80 backdrop-blur-md dark:bg-slate-800/80 rounded-full shadow-sm text-slate-500 dark:text-slate-400 active:scale-90 transition-all hover:bg-white dark:hover:bg-slate-700">
+                    <button onClick={() => handleTabChange('calc')} className="p-2 bg-white/80 backdrop-blur-md dark:bg-slate-800/80 rounded-full shadow-sm text-slate-500 dark:text-slate-400 active:scale-90 transition-all hover:bg-white dark:hover:bg-slate-700">
                       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="m15 18-6-6 6-6"/></svg>
                     </button>
                   </div>
@@ -936,7 +962,7 @@
                           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
                           分享程式
                         </button>
-                        <button onClick={() => setActiveTab('calc')} className={`flex-1 py-3.5 text-white font-black rounded-2xl active:scale-95 transition-all uppercase tracking-widest text-xs shadow-xl ${priority === 'stamps' ? 'bg-hkPost shadow-green-500/20' : 'bg-purple-600 shadow-purple-500/20'}`}>
+                        <button onClick={() => handleTabChange('calc')} className={`flex-1 py-3.5 text-white font-black rounded-2xl active:scale-95 transition-all uppercase tracking-widest text-xs shadow-xl ${priority === 'stamps' ? 'bg-hkPost shadow-green-500/20' : 'bg-purple-600 shadow-purple-500/20'}`}>
                           返回首頁
                         </button>
                       </div>
