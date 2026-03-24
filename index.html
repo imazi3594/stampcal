@@ -161,9 +161,37 @@
       <div className={`w-1.5 h-6 rounded-full ${priority === 'stamps' ? 'bg-hkPost' : 'bg-purple-600'}`}></div>
     );
 
+    const IconQuantity = ({ className = "" }) => (
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className={className}>
+        <rect width="7" height="7" x="3" y="3" rx="1.5" fill="currentColor" fillOpacity="0.2"/>
+        <rect width="7" height="7" x="14" y="3" rx="1.5"/>
+        <rect width="7" height="7" x="3" y="14" rx="1.5"/>
+        <rect width="7" height="7" x="14" y="14" rx="1.5" fill="currentColor" fillOpacity="0.2"/>
+      </svg>
+    );
+
+    const IconDenomination = ({ className = "" }) => (
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className={className}>
+        <circle cx="12" cy="12" r="10" fill="currentColor" fillOpacity="0.2"/>
+        <path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"/>
+        <path d="M12 18V6"/>
+      </svg>
+    );
+
     function App() {
       const [targetPostage, setTargetPostage] = useState('');
-      const [activeTab, setActiveTab] = useState('calc');
+      const [activeTab, setActiveTab] = useState(() => {
+        if (window.history.state && window.history.state.tab) {
+          return window.history.state.tab;
+        }
+        return 'calc';
+      });
+      const activeTabRef = React.useRef(activeTab);
+      
+      useEffect(() => {
+        activeTabRef.current = activeTab;
+      }, [activeTab]);
+
       const [deferredPrompt, setDeferredPrompt] = useState(null);
       const [isStandalone, setIsStandalone] = useState(false);
       const [lastToggledId, setLastToggledId] = useState(null);
@@ -186,18 +214,19 @@
         return saved ? JSON.parse(saved) : [];
       });
 
-      const triggerWarning = (msg) => {
-        setWarning(msg);
-        const timer = setTimeout(() => setWarning(''), 2000);
-        return () => clearTimeout(timer);
+      const [exitPrompt, setExitPrompt] = useState(false);
+      const exitPromptTimer = React.useRef(null);
+
+      const showExitPrompt = () => {
+        setExitPrompt(true);
+        if (exitPromptTimer.current) clearTimeout(exitPromptTimer.current);
+        exitPromptTimer.current = setTimeout(() => {
+          setExitPrompt(false);
+          if (window.history.state && window.history.state.isGuard) {
+            window.history.pushState({ tab: 'calc' }, '');
+          }
+        }, 2000);
       };
-
-      const activeTabRef = React.useRef(activeTab);
-      useEffect(() => {
-        activeTabRef.current = activeTab;
-      }, [activeTab]);
-
-      const exitTimerRef = React.useRef(null);
 
       const handleTabChange = (tab) => {
         if (tab === 'calc' && activeTab !== 'calc') {
@@ -209,44 +238,25 @@
       };
 
       useEffect(() => {
-        if (!window.history.state || !window.history.state.tab) {
-          window.history.replaceState({ tab: 'calc' }, '');
-          window.history.pushState({ tab: 'calc', trap: true }, '');
-        } else if (window.history.state.tab === 'calc' && !window.history.state.trap) {
-          window.history.replaceState({ tab: 'calc' }, '');
-          window.history.pushState({ tab: 'calc', trap: true }, '');
+        if (!window.history.state) {
+          window.history.replaceState({ tab: 'calc', isGuard: true }, '');
+          window.history.pushState({ tab: 'calc' }, '');
         }
 
         const handlePopState = (event) => {
           const state = event.state;
-          const currentTab = activeTabRef.current;
-          
-          if (state && state.tab === 'calc' && !state.trap) {
-            if (currentTab === 'calc') {
-              if (exitTimerRef.current) {
-                window.history.back();
-              } else {
-                triggerWarning('再按一次退出程式');
-                window.history.pushState({ tab: 'calc', trap: true }, '');
-                exitTimerRef.current = setTimeout(() => {
-                  exitTimerRef.current = null;
-                }, 2000);
-              }
-            } else {
+          if (state && state.isGuard) {
+            if (activeTabRef.current === 'calc') {
+              showExitPrompt();
               setActiveTab('calc');
-              window.history.replaceState({ tab: 'calc' }, '');
-              window.history.pushState({ tab: 'calc', trap: true }, '');
+            } else {
+              window.history.pushState({ tab: 'calc' }, '');
+              setActiveTab('calc');
             }
           } else if (state && state.tab) {
             setActiveTab(state.tab);
-            if (state.tab === 'calc' && !state.trap) {
-              window.history.replaceState({ tab: 'calc' }, '');
-              window.history.pushState({ tab: 'calc', trap: true }, '');
-            }
           } else {
             setActiveTab('calc');
-            window.history.replaceState({ tab: 'calc' }, '');
-            window.history.pushState({ tab: 'calc', trap: true }, '');
           }
         };
 
@@ -295,6 +305,12 @@
       useEffect(() => {
         localStorage.setItem('calc_priority', priority);
       }, [priority]);
+
+      const triggerWarning = (msg) => {
+        setWarning(msg);
+        const timer = setTimeout(() => setWarning(''), 2000);
+        return () => clearTimeout(timer);
+      };
 
       const handleInstallClick = async (e) => {
         e.stopPropagation();
@@ -529,6 +545,14 @@
             </div>
           )}
 
+          {exitPrompt && (
+            <div className="fixed bottom-12 left-1/2 -translate-x-1/2 z-[100] animate-in fade-in slide-in-from-bottom-4 duration-300">
+              <div className={`backdrop-blur-md text-white px-6 py-2.5 rounded-full shadow-xl flex items-center gap-2 border border-white/20 ${priority === 'stamps' ? 'bg-hkPost/90' : 'bg-purple-600/90'}`}>
+                <span className="text-sm font-bold tracking-wider">再按一次退出程式</span>
+              </div>
+            </div>
+          )}
+
           <div className="max-w-md w-full h-full flex flex-col relative overflow-hidden">
             
             {activeTab === 'calc' && (
@@ -574,9 +598,9 @@
 
                       <button onClick={() => setPriority(prev => prev === 'stamps' ? 'varieties' : 'stamps')} className={`flex flex-col items-center justify-center px-3 py-2 rounded-xl border-2 transition-all active:scale-95 shadow-sm ${priority === 'stamps' ? 'border-hkPost bg-green-50 dark:bg-green-900/20 text-hkPost dark:text-green-400' : 'border-purple-500 bg-purple-50 dark:bg-purple-900/20 text-purple-600 dark:text-purple-400'}`}>
                         {priority === 'stamps' ? (
-                          <><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="mb-0.5"><rect width="8" height="8" x="3" y="3" rx="1"/><rect width="8" height="8" x="13" y="3" rx="1"/><rect width="8" height="8" x="3" y="13" rx="1"/><rect width="8" height="8" x="13" y="13" rx="1"/></svg><span className="text-[10px] font-black uppercase tracking-tighter">數量優先</span></>
+                          <><IconQuantity className="w-[18px] h-[18px] mb-0.5" /><span className="text-[10px] font-black uppercase tracking-tighter">數量優先</span></>
                         ) : (
-                          <><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="mb-0.5"><circle cx="12" cy="12" r="10"/><path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"/><path d="M12 18V6"/></svg><span className="text-[10px] font-black uppercase tracking-tighter">面值優先</span></>
+                          <><IconDenomination className="w-[18px] h-[18px] mb-0.5" /><span className="text-[10px] font-black uppercase tracking-tighter">面值優先</span></>
                         )}
                       </button>
                     </div>
@@ -724,11 +748,17 @@
                     <h3 className="text-sm font-black text-slate-600 dark:text-slate-300 uppercase tracking-widest pl-1">方案優先順序</h3>
                     <div className="grid grid-cols-2 gap-2">
                       <button onClick={() => setPriority('stamps')} className={`flex flex-col items-center justify-center p-3 rounded-2xl border-2 transition-all shadow-sm ${priority === 'stamps' ? 'border-hkPost bg-green-50 dark:bg-green-900/20' : 'border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700/50 hover:border-slate-300 dark:hover:border-slate-600'}`}>
-                        <span className={`text-sm font-black mb-1 ${priority === 'stamps' ? 'text-hkPost dark:text-green-400' : 'text-slate-600 dark:text-slate-300'}`}>數量優先</span>
+                        <div className={`flex items-center gap-1.5 mb-1 ${priority === 'stamps' ? 'text-hkPost dark:text-green-400' : 'text-slate-600 dark:text-slate-300'}`}>
+                          <IconQuantity className="w-4 h-4" />
+                          <span className="text-sm font-black">數量優先</span>
+                        </div>
                         <span className={`text-[10px] font-bold text-center ${priority === 'stamps' ? 'text-green-700/70 dark:text-green-400/70' : 'text-slate-400 dark:text-slate-500'}`}>使用最少數量郵票</span>
                       </button>
                       <button onClick={() => setPriority('varieties')} className={`flex flex-col items-center justify-center p-3 rounded-2xl border-2 transition-all shadow-sm ${priority === 'varieties' ? 'border-purple-500 bg-purple-50 dark:bg-purple-900/20' : 'border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700/50 hover:border-slate-300 dark:hover:border-slate-600'}`}>
-                        <span className={`text-sm font-black mb-1 ${priority === 'varieties' ? 'text-purple-600 dark:text-purple-400' : 'text-slate-600 dark:text-slate-300'}`}>面值優先</span>
+                        <div className={`flex items-center gap-1.5 mb-1 ${priority === 'varieties' ? 'text-purple-600 dark:text-purple-400' : 'text-slate-600 dark:text-slate-300'}`}>
+                          <IconDenomination className="w-4 h-4" />
+                          <span className="text-sm font-black">面值優先</span>
+                        </div>
                         <span className={`text-[10px] font-bold text-center ${priority === 'varieties' ? 'text-purple-700/70 dark:text-purple-400/70' : 'text-slate-400 dark:text-slate-500'}`}>減少面額種類</span>
                       </button>
                     </div>
@@ -925,7 +955,7 @@
                       <div className="grid grid-cols-1 gap-5">
                         <div className="space-y-1.5">
                           <h5 className="text-sm font-black text-hkPost flex items-center gap-2">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><rect width="8" height="8" x="3" y="3" rx="1"/><rect width="8" height="8" x="13" y="3" rx="1"/><rect width="8" height="8" x="3" y="13" rx="1"/><rect width="8" height="8" x="13" y="13" rx="1"/></svg>
+                            <IconQuantity className="w-4 h-4" />
                             數量優先
                           </h5>
                           <p className="text-sm text-slate-600 dark:text-slate-400 font-bold">優先尋找「最少郵票總數」的方案，節省信封空間。</p>
@@ -933,7 +963,7 @@
                         <div className="h-[1px] bg-slate-200 dark:bg-slate-800"></div>
                         <div className="space-y-1.5">
                           <h5 className="text-sm font-black text-purple-500 flex items-center gap-2">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"/><path d="M12 18V6"/></svg>
+                            <IconDenomination className="w-4 h-4" />
                             面值優先
                           </h5>
                           <p className="text-sm text-slate-600 dark:text-slate-400 font-bold">在確保總數合理的同時，盡量減少使用的「面額種類」。</p>
