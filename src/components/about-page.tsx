@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "@tanstack/react-router";
-import { ArrowLeft, Github, Share } from "lucide-react";
+import { ArrowLeft, Share } from "lucide-react";
 import { loadSaved } from "@/lib/stamp-settings";
 import { applyCrisis, applySolveMode } from "@/lib/theme";
 
@@ -135,18 +135,17 @@ export function AboutPage() {
         <p className="max-w-[22rem] px-1 text-[0.875rem] leading-[1.85] text-subtle">
           本應用程式之介面及運算由Grok協助開發而成。
         </p>
-        <a
-          href="https://github.com/imazi3594/stampcal"
-          target="_blank"
-          rel="noreferrer"
-          className="inline-flex items-center gap-2 rounded-full bg-surface py-2 pr-3.5 pl-2.5 no-underline shadow-(--shadow-border) transition-[transform,background-color] duration-(--motion-quick) ease-(--ease-smooth-out) hover:bg-surface-2"
-        >
-          <span className="inline-flex size-7 items-center justify-center rounded-full bg-ink/8 text-ink">
-            <Github className="size-3.5" aria-hidden />
-          </span>
-          <span className="text-sm font-semibold text-ink">開源專案</span>
-          <span className="text-[0.75rem] text-subtle">GitHub</span>
-        </a>
+        <p className="max-w-[22rem] px-1 text-[0.875rem] leading-[1.85] text-subtle">
+          開源：{" "}
+          <a
+            href="https://github.com/imazi3594/stampcal"
+            target="_blank"
+            rel="noreferrer"
+            className="text-ink underline decoration-border underline-offset-2"
+          >
+            github.com/imazi3594/stampcal
+          </a>
+        </p>
         <div className="mt-1 flex w-full gap-3">
           <button
             type="button"
