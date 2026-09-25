@@ -1,4 +1,6 @@
 {
   "title": "郵票組合計數機",
-  "color": "1A6B4A"
+  "card": "custom",
+  "color": "009247",
+  "banner": "/x-banner.jpg"
 }

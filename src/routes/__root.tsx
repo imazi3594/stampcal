@@ -5,6 +5,24 @@ import appCss from "../styles.css?url";
 
 const APP_NAME = "郵票組合計數機";
 
+function publicShareHost(): string {
+  const raw = String(import.meta.env.VITE_PUBLIC_HOSTNAME ?? "")
+    .split(",")[0]
+    .trim()
+    .split(":")[0]
+    .toLowerCase();
+  if (!raw || !/^[a-z0-9.-]+$/.test(raw) || !raw.includes(".")) return "";
+  if (/^\d{1,3}(?:\.\d{1,3}){3}$/.test(raw)) return "";
+  if (raw === "vercel.app" || raw.endsWith(".vercel.app") || raw === "vercel.com" || raw.endsWith(".vercel.com")) {
+    return "";
+  }
+  return raw;
+}
+
+const host = publicShareHost();
+const ogImage = host ? `https://${host}/og.jpg` : "";
+const xBanner = host ? `https://${host}/x-banner.jpg` : "";
+
 export const Route = createRootRoute({
   head: () => ({
     meta: [
@@ -20,6 +38,8 @@ export const Route = createRootRoute({
       { name: "apple-mobile-web-app-capable", content: "yes" },
       { name: "apple-mobile-web-app-title", content: "郵票計數機" },
       { name: "apple-mobile-web-app-status-bar-style", content: "default" },
+      ...(ogImage ? [{ property: "og:image", content: ogImage }] : []),
+      ...(xBanner ? [{ property: "x:game:image", content: xBanner }] : []),
     ],
     links: [
       { rel: "icon", type: "image/png", sizes: "32x32", href: "/favicon-32.png" },
@@ -27,10 +47,6 @@ export const Route = createRootRoute({
       { rel: "icon", type: "image/svg+xml", href: "/favicon.svg" },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
-      {
-        rel: "stylesheet",
-        href: "https://fonts.googleapis.com/css2?family=Noto+Sans+HK:wght@400;500;600;700&family=Outfit:wght@500;600;700&display=swap",
-      },
       { rel: "stylesheet", href: appCss },
       { rel: "apple-touch-icon", href: "/apple-touch-icon.png" },
       { rel: "manifest", href: "/manifest.webmanifest" },
@@ -45,6 +61,7 @@ export const Route = createRootRoute({
             __html: `try{if(localStorage.getItem("stamp-calc-theme")==="dark"){document.documentElement.classList.add("dark");document.documentElement.style.colorScheme="dark"}var s=JSON.parse(localStorage.getItem("stamp-calc-v2")||"{}");if(s.mode==="types")document.documentElement.classList.add("types")}catch(e){}
 window.addEventListener("beforeinstallprompt",function(e){e.preventDefault();window.__pwaDeferred=e;});
 if("serviceWorker"in navigator){navigator.serviceWorker.register(new URL("sw.js",document.baseURI).href).catch(function(){});}
+(function(){var l=document.createElement("link");l.rel="stylesheet";l.href="https://fonts.googleapis.com/css2?family=Noto+Sans+HK:wght@400;500;600;700&family=Outfit:wght@500;600;700&display=swap";l.media="print";l.onload=function(){l.media="all"};document.head.appendChild(l);})();
 (function(){function editable(t){return t&&t.closest&&t.closest("input,textarea,[contenteditable=true]");}function block(e){if(!editable(e.target))e.preventDefault();}document.addEventListener("selectstart",block);document.addEventListener("copy",block);document.addEventListener("cut",block);document.addEventListener("contextmenu",block);})();`,
           }}
         />
