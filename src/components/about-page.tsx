@@ -48,10 +48,11 @@ export function AboutPage() {
         <h1 className="flex h-10 items-center text-lg leading-none font-semibold tracking-tight text-ink">關於</h1>
       </header>
 
-      <div className="flex flex-col gap-12 px-4 pt-3 pb-8 sm:px-6">
+      <img src="/og.jpg" alt="" className="block w-full" />
+
+      <div className="flex flex-col gap-12 px-4 pt-6 pb-8 sm:px-6">
 
       <section className="stagger-in overflow-visible text-center">
-        <HeroArt />
         <h2 className="mt-4 font-sans text-[1.65rem] font-bold tracking-tight text-ink">郵票組合計數機</h2>
         <p className="mt-3 flex items-center justify-center gap-2.5 font-display text-[0.625rem] font-semibold tracking-[0.14em] text-primary">
           <span className="h-px w-7 bg-primary/45" aria-hidden />
@@ -135,17 +136,6 @@ export function AboutPage() {
         <p className="max-w-[22rem] px-1 text-[0.875rem] leading-[1.85] text-subtle">
           本應用程式之介面及運算由Grok協助開發而成。
         </p>
-        <p className="max-w-[22rem] px-1 text-[0.875rem] leading-[1.85] text-subtle">
-          開源：{" "}
-          <a
-            href="https://github.com/imazi3594/stampcal"
-            target="_blank"
-            rel="noreferrer"
-            className="text-ink underline decoration-border underline-offset-2"
-          >
-            github.com/imazi3594/stampcal
-          </a>
-        </p>
         <div className="mt-1 flex w-full gap-3">
           <button
             type="button"
@@ -174,157 +164,6 @@ function SectionTitle({ children }: { children: string }) {
       <span className="h-[1.05em] w-[3px] shrink-0 rounded-full bg-primary" aria-hidden />
       {children}
     </h2>
-  );
-}
-
-function HeroArt() {
-  return (
-    <svg viewBox="0 0 260 200" className="mx-auto block h-auto w-full max-w-[17.5rem]" aria-hidden>
-      <defs>
-        <linearGradient id="hero-coin" x1="0.2" y1="0" x2="0.85" y2="1">
-          <stop offset="0%" stopColor="#fff4c2" />
-          <stop offset="38%" stopColor="#f0c64a" />
-          <stop offset="100%" stopColor="#c48416" />
-        </linearGradient>
-        <radialGradient id="hero-coin-inner" cx="0.42" cy="0.38" r="0.7">
-          <stop offset="0%" stopColor="#fff1a8" />
-          <stop offset="70%" stopColor="#e8b031" />
-          <stop offset="100%" stopColor="#c07a12" />
-        </radialGradient>
-        <linearGradient id="hero-env" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#ffffff" />
-          <stop offset="100%" stopColor="#e7f3fb" />
-        </linearGradient>
-        <linearGradient id="hero-flap" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#f4faff" />
-          <stop offset="100%" stopColor="#d5eaf7" />
-        </linearGradient>
-        <filter id="hero-soft" x="-20%" y="-20%" width="140%" height="140%">
-          <feDropShadow dx="0" dy="2.2" stdDeviation="2.2" floodColor="#1a3344" floodOpacity="0.2" />
-        </filter>
-        <filter id="hero-coin-soft" x="-25%" y="-25%" width="150%" height="150%">
-          <feDropShadow dx="0" dy="3" stdDeviation="2.6" floodColor="#8a5a00" floodOpacity="0.35" />
-        </filter>
-      </defs>
-
-      <path d="M28 22 L32 32 L22 28 Z" fill="#f5c542" />
-      <path d="M228 44 L234 50 L224 52 Z" fill="#f6d36a" />
-      <path d="M24 168 L30 172 L22 176 Z" fill="#e8b84a" />
-
-      <MiniStamp x={6} y={92} rotate={-16} paper="#d7f0c6" ink="#2f6b28" label="$2" maskId="hero-perf-a" />
-      <MiniStamp x={168} y={22} rotate={10} paper="#f3d4ea" ink="#8a3060" label="$10" maskId="hero-perf-b" />
-      <MiniStamp x={198} y={78} rotate={18} paper="#ddd0f8" ink="#5a348f" label="$5.5" maskId="hero-perf-c" />
-
-      <g filter="url(#hero-soft)">
-        <path d="M62 86 L130 48 L198 86" fill="url(#hero-flap)" stroke="#5a9fd4" strokeWidth="2.6" strokeLinejoin="round" />
-        <rect x="62" y="84" width="136" height="72" rx="5" fill="url(#hero-env)" stroke="#5a9fd4" strokeWidth="2.6" />
-        <path d="M64 86 L130 128 L196 86" fill="none" stroke="#9cc5e0" strokeWidth="1.7" />
-        <path d="M62 86 L62 156" stroke="#e85d4c" strokeWidth="3.2" />
-        <path d="M198 86 L198 156" stroke="#3b82c4" strokeWidth="3.2" />
-        <path d="M66 86 H92" stroke="#e85d4c" strokeWidth="3" strokeLinecap="round" />
-        <path d="M96 86 H118" stroke="#3b82c4" strokeWidth="3" strokeLinecap="round" />
-        <path d="M142 86 H164" stroke="#3b82c4" strokeWidth="3" strokeLinecap="round" />
-        <path d="M168 86 H192" stroke="#e85d4c" strokeWidth="3" strokeLinecap="round" />
-        <path d="M66 156 H92" stroke="#e85d4c" strokeWidth="3" strokeLinecap="round" />
-        <path d="M96 156 H118" stroke="#3b82c4" strokeWidth="3" strokeLinecap="round" />
-        <path d="M142 156 H164" stroke="#3b82c4" strokeWidth="3" strokeLinecap="round" />
-        <path d="M168 156 H192" stroke="#e85d4c" strokeWidth="3" strokeLinecap="round" />
-      </g>
-
-      <g transform="translate(130 132)" filter="url(#hero-coin-soft)">
-        {Array.from({ length: 28 }, (_, i) => (
-          <rect
-            key={i}
-            x={-1.15}
-            y={-36.5}
-            width={2.3}
-            height={4.2}
-            rx={0.6}
-            fill="#d9a01c"
-            transform={`rotate(${(360 / 28) * i})`}
-          />
-        ))}
-        <circle r="33" fill="url(#hero-coin)" stroke="#f8e7a0" strokeWidth="1.4" />
-        <circle r="26.5" fill="none" stroke="#a56b12" strokeWidth="1.15" opacity="0.55" />
-        <circle r="24.5" fill="url(#hero-coin-inner)" />
-        <text
-          textAnchor="middle"
-          y="10"
-          fontSize="28"
-          fontWeight="700"
-          fill="#7a4a08"
-          fontFamily="Outfit, 'Noto Sans HK', sans-serif"
-        >
-          $
-        </text>
-        <ellipse cx="-9" cy="-10" rx="8" ry="5" fill="#fff" opacity="0.28" />
-      </g>
-    </svg>
-  );
-}
-
-function MiniStamp({
-  x,
-  y,
-  rotate,
-  paper,
-  ink,
-  label,
-  maskId,
-}: {
-  x: number;
-  y: number;
-  rotate: number;
-  paper: string;
-  ink: string;
-  label: string;
-  maskId: string;
-}) {
-  const holes: { cx: number; cy: number }[] = [];
-  for (let i = 0; i < 8; i += 1) {
-    const cx = 3.4 + i * 6.6;
-    holes.push({ cx, cy: 0 }, { cx, cy: 70 });
-  }
-  for (let i = 1; i < 10; i += 1) {
-    const cy = 3.5 + i * 6.5;
-    holes.push({ cx: 0, cy }, { cx: 52, cy });
-  }
-
-  return (
-    <g transform={`translate(${x} ${y}) rotate(${rotate} 26 35)`} filter="url(#hero-soft)">
-      <svg width="52" height="70" overflow="visible">
-        <defs>
-          <mask id={maskId}>
-            <rect width="52" height="70" fill="#fff" />
-            {holes.map((hole, i) => (
-              <circle key={i} cx={hole.cx} cy={hole.cy} r="2.35" fill="#000" />
-            ))}
-          </mask>
-        </defs>
-        <g mask={`url(#${maskId})`}>
-          <rect width="52" height="70" fill={paper} />
-          <rect width="52" height="70" fill="url(#hero-flap)" opacity="0.18" />
-          <rect x="7" y="8" width="38" height="54" rx="1.4" fill="none" stroke={ink} strokeWidth="1.15" opacity="0.55" />
-          <g transform="translate(26 26)" fill={ink} opacity="0.78">
-            {[0, 72, 144, 216, 288].map((deg) => (
-              <ellipse key={deg} cx="0" cy="-5.4" rx="3.1" ry="5.6" transform={`rotate(${deg})`} />
-            ))}
-            <circle r="2.1" />
-          </g>
-          <text
-            x="26"
-            y="58"
-            textAnchor="middle"
-            fontSize="12.5"
-            fontWeight="700"
-            fill={ink}
-            fontFamily="Outfit, 'Noto Sans HK', sans-serif"
-          >
-            {label}
-          </text>
-        </g>
-      </svg>
-    </g>
   );
 }
 

@@ -126,12 +126,11 @@
     .page-body { flex: 1 1 0; min-height: 0; overflow: auto; padding-bottom: 2rem; -webkit-overflow-scrolling: touch; }
     .wrap.settings .top, .wrap.about .top { z-index: 10; background: var(--bg); }
     .wrap.about { gap: 0.5rem; padding: 0.75rem 1rem 0; }
-    .wrap.about .page-body { display: flex; flex-direction: column; gap: 3rem; padding-top: 0.75rem; padding-bottom: 2.5rem; }
+    .wrap.about .page-body { display: flex; flex-direction: column; gap: 3rem; padding-top: 0; padding-bottom: 2.5rem; }
     .wrap.about .top { gap: 0.25rem; }
     .wrap.about .top h1 { margin: 0; }
-    .about-hero { display: block; text-align: center; overflow: visible; background: none; padding: 0; border-radius: 0; }
-    .hero-stage { width: min(17.5rem, 100%); margin: 0 auto; }
-    .hero-stage svg { width: 100%; height: auto; display: block; overflow: visible; }
+    .about-hero { display: block; text-align: center; overflow: visible; background: none; padding: 0.75rem 0 0; border-radius: 0; margin: 0 -1rem; }
+    .hero-banner { display: block; width: 100%; height: auto; border-radius: 0; }
     .about-hero h2 { margin-top: 1rem; font-size: 1.65rem; font-weight: 700; letter-spacing: -0.02em; }
     .about-kicker { display: flex; align-items: center; justify-content: center; gap: 0.6rem; margin: 0.75rem 0 0; font-family: var(--display); font-size: 0.625rem; font-weight: 600; letter-spacing: 0.14em; color: var(--primary); }
     .about-kicker i { display: block; width: 1.75rem; height: 1px; background: color-mix(in oklab, var(--primary) 45%, transparent); }
@@ -398,12 +397,6 @@
     .install-btn.show { display: flex; }
     .install-btn:hover { background: var(--bg); color: var(--ink); }
     .install-btn:disabled { opacity: 0.7; }
-    .credit { display: flex; align-items: center; justify-content: center; flex: 0 0 auto; padding-bottom: 0.15rem; }
-    .credit a { display: inline-flex; align-items: center; gap: 0.35rem; color: var(--subtle); text-decoration: none; font-size: 0.625rem; letter-spacing: 0.04em; }
-    .credit a:hover { color: var(--muted); }
-    .credit svg { width: 0.75rem; height: 0.75rem; color: var(--muted); flex-shrink: 0; }
-    .credit .grok { font-family: var(--display); font-weight: 600; letter-spacing: 0; color: var(--muted); }
-    .credit .ai { font-family: var(--display); font-weight: 600; letter-spacing: 0.04em; color: var(--primary); }
     .install-sheet { pointer-events: none; position: fixed; inset: 1rem 1rem auto; z-index: 21; display: none; justify-content: center; }
     .install-sheet.show { display: flex; pointer-events: auto; }
     .install-card { position: relative; width: min(24rem, 100%); border-radius: 1rem; background: var(--surface); color: var(--ink); padding: 1rem 1.25rem; box-shadow: var(--shadow); }
@@ -504,17 +497,6 @@
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 17V3"/><path d="m6 11 6 6 6-6"/><path d="M19 21H5"/></svg>
       加入主畫面
     </button>
-    <footer class="credit">
-      <a href="https://grok.com" target="_blank" rel="noreferrer">
-        <span>Built with</span>
-        <svg viewBox="0 0 12 11.5714" aria-hidden="true">
-          <path fill="currentColor" d="M4.63453 7.42767L8.62395 4.46607C8.81953 4.32088 9.09907 4.37752 9.19225 4.60303C9.68274 5.79241 9.46361 7.22172 8.48776 8.20308C7.5119 9.18444 6.15411 9.39966 4.91305 8.9095L3.5573 9.54074C5.50184 10.8774 7.86313 10.5468 9.33868 9.0619C10.5091 7.88488 10.8716 6.28051 10.5326 4.8337L10.5357 4.83679C10.0442 2.71136 10.6565 1.86181 11.9109 0.124601C11.9406 0.0834107 11.9703 0.0422202 12 0L10.3493 1.65998V1.65483L4.6335 7.4287"/>
-          <path fill="currentColor" d="M3.81125 8.14747C2.41556 6.80672 2.6562 4.73175 3.84709 3.53517C4.72771 2.64958 6.17049 2.28813 7.42999 2.81949L8.78266 2.19133C8.53895 2.01421 8.22664 1.82371 7.86825 1.68984C6.24832 1.01946 4.3089 1.35311 2.99206 2.67635C1.7254 3.95016 1.32708 5.90877 2.01109 7.58007C2.52206 8.82917 1.68444 9.71271 0.840686 10.6045C0.541684 10.9206 0.241659 11.2368 0 11.5714L3.81022 8.1485"/>
-        </svg>
-        <span class="grok">Grok</span>
-        <span class="ai">AI</span>
-      </a>
-    </footer>
   </main>
 
   <main id="settings" class="wrap settings hidden" hidden aria-hidden="true">
@@ -593,96 +575,7 @@
     </header>
     <div class="page-body">
     <section class="about-hero">
-      <div class="hero-stage" aria-hidden="true">
-        <svg viewBox="0 0 260 200">
-          <defs>
-            <linearGradient id="hero-coin" x1="0.2" y1="0" x2="0.85" y2="1">
-              <stop offset="0%" stop-color="#fff4c2"/><stop offset="38%" stop-color="#f0c64a"/><stop offset="100%" stop-color="#c48416"/>
-            </linearGradient>
-            <radialGradient id="hero-coin-inner" cx="0.42" cy="0.38" r="0.7">
-              <stop offset="0%" stop-color="#fff1a8"/><stop offset="70%" stop-color="#e8b031"/><stop offset="100%" stop-color="#c07a12"/>
-            </radialGradient>
-            <linearGradient id="hero-env" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stop-color="#ffffff"/><stop offset="100%" stop-color="#e7f3fb"/>
-            </linearGradient>
-            <linearGradient id="hero-flap" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stop-color="#f4faff"/><stop offset="100%" stop-color="#d5eaf7"/>
-            </linearGradient>
-            <filter id="hero-soft" x="-20%" y="-20%" width="140%" height="140%">
-              <feDropShadow dx="0" dy="2.2" stdDeviation="2.2" flood-color="#1a3344" flood-opacity="0.2"/>
-            </filter>
-            <filter id="hero-coin-soft" x="-25%" y="-25%" width="150%" height="150%">
-              <feDropShadow dx="0" dy="3" stdDeviation="2.6" flood-color="#8a5a00" flood-opacity="0.35"/>
-            </filter>
-            <mask id="hero-perf">
-              <rect width="52" height="70" fill="#fff"/>
-              <circle cx="3.4" cy="0" r="2.35" fill="#000"/><circle cx="3.4" cy="70" r="2.35" fill="#000"/><circle cx="10.0" cy="0" r="2.35" fill="#000"/><circle cx="10.0" cy="70" r="2.35" fill="#000"/><circle cx="16.6" cy="0" r="2.35" fill="#000"/><circle cx="16.6" cy="70" r="2.35" fill="#000"/><circle cx="23.2" cy="0" r="2.35" fill="#000"/><circle cx="23.2" cy="70" r="2.35" fill="#000"/><circle cx="29.8" cy="0" r="2.35" fill="#000"/><circle cx="29.8" cy="70" r="2.35" fill="#000"/><circle cx="36.4" cy="0" r="2.35" fill="#000"/><circle cx="36.4" cy="70" r="2.35" fill="#000"/><circle cx="43.0" cy="0" r="2.35" fill="#000"/><circle cx="43.0" cy="70" r="2.35" fill="#000"/><circle cx="49.6" cy="0" r="2.35" fill="#000"/><circle cx="49.6" cy="70" r="2.35" fill="#000"/><circle cx="0" cy="10.0" r="2.35" fill="#000"/><circle cx="52" cy="10.0" r="2.35" fill="#000"/><circle cx="0" cy="16.5" r="2.35" fill="#000"/><circle cx="52" cy="16.5" r="2.35" fill="#000"/><circle cx="0" cy="23.0" r="2.35" fill="#000"/><circle cx="52" cy="23.0" r="2.35" fill="#000"/><circle cx="0" cy="29.5" r="2.35" fill="#000"/><circle cx="52" cy="29.5" r="2.35" fill="#000"/><circle cx="0" cy="36.0" r="2.35" fill="#000"/><circle cx="52" cy="36.0" r="2.35" fill="#000"/><circle cx="0" cy="42.5" r="2.35" fill="#000"/><circle cx="52" cy="42.5" r="2.35" fill="#000"/><circle cx="0" cy="49.0" r="2.35" fill="#000"/><circle cx="52" cy="49.0" r="2.35" fill="#000"/><circle cx="0" cy="55.5" r="2.35" fill="#000"/><circle cx="52" cy="55.5" r="2.35" fill="#000"/><circle cx="0" cy="62.0" r="2.35" fill="#000"/><circle cx="52" cy="62.0" r="2.35" fill="#000"/>
-            </mask>
-          </defs>
-          <path d="M28 22 L32 32 L22 28 Z" fill="#f5c542"/>
-          <path d="M228 44 L234 50 L224 52 Z" fill="#f6d36a"/>
-          <path d="M24 168 L30 172 L22 176 Z" fill="#e8b84a"/>
-          <g transform="translate(6 92) rotate(-16 26 35)" filter="url(#hero-soft)">
-            <svg width="52" height="70" overflow="visible">
-              <g mask="url(#hero-perf)">
-                <rect width="52" height="70" fill="#d7f0c6"/>
-                <rect x="7" y="8" width="38" height="54" rx="1.4" fill="none" stroke="#2f6b28" stroke-width="1.15" opacity="0.55"/>
-                <g transform="translate(26 26)" fill="#2f6b28" opacity="0.78">
-                  <ellipse cx="0" cy="-5.4" rx="3.1" ry="5.6"/><ellipse cx="0" cy="-5.4" rx="3.1" ry="5.6" transform="rotate(72)"/><ellipse cx="0" cy="-5.4" rx="3.1" ry="5.6" transform="rotate(144)"/><ellipse cx="0" cy="-5.4" rx="3.1" ry="5.6" transform="rotate(216)"/><ellipse cx="0" cy="-5.4" rx="3.1" ry="5.6" transform="rotate(288)"/><circle r="2.1"/>
-                </g>
-                <text x="26" y="58" text-anchor="middle" font-size="12.5" font-weight="700" fill="#2f6b28" font-family="Outfit, 'Noto Sans HK', sans-serif">$2</text>
-              </g>
-            </svg>
-          </g>
-          <g transform="translate(168 22) rotate(10 26 35)" filter="url(#hero-soft)">
-            <svg width="52" height="70" overflow="visible">
-              <g mask="url(#hero-perf)">
-                <rect width="52" height="70" fill="#f3d4ea"/>
-                <rect x="7" y="8" width="38" height="54" rx="1.4" fill="none" stroke="#8a3060" stroke-width="1.15" opacity="0.55"/>
-                <g transform="translate(26 26)" fill="#8a3060" opacity="0.78">
-                  <ellipse cx="0" cy="-5.4" rx="3.1" ry="5.6"/><ellipse cx="0" cy="-5.4" rx="3.1" ry="5.6" transform="rotate(72)"/><ellipse cx="0" cy="-5.4" rx="3.1" ry="5.6" transform="rotate(144)"/><ellipse cx="0" cy="-5.4" rx="3.1" ry="5.6" transform="rotate(216)"/><ellipse cx="0" cy="-5.4" rx="3.1" ry="5.6" transform="rotate(288)"/><circle r="2.1"/>
-                </g>
-                <text x="26" y="58" text-anchor="middle" font-size="12.5" font-weight="700" fill="#8a3060" font-family="Outfit, 'Noto Sans HK', sans-serif">$10</text>
-              </g>
-            </svg>
-          </g>
-          <g transform="translate(198 78) rotate(18 26 35)" filter="url(#hero-soft)">
-            <svg width="52" height="70" overflow="visible">
-              <g mask="url(#hero-perf)">
-                <rect width="52" height="70" fill="#ddd0f8"/>
-                <rect x="7" y="8" width="38" height="54" rx="1.4" fill="none" stroke="#5a348f" stroke-width="1.15" opacity="0.55"/>
-                <g transform="translate(26 26)" fill="#5a348f" opacity="0.78">
-                  <ellipse cx="0" cy="-5.4" rx="3.1" ry="5.6"/><ellipse cx="0" cy="-5.4" rx="3.1" ry="5.6" transform="rotate(72)"/><ellipse cx="0" cy="-5.4" rx="3.1" ry="5.6" transform="rotate(144)"/><ellipse cx="0" cy="-5.4" rx="3.1" ry="5.6" transform="rotate(216)"/><ellipse cx="0" cy="-5.4" rx="3.1" ry="5.6" transform="rotate(288)"/><circle r="2.1"/>
-                </g>
-                <text x="26" y="58" text-anchor="middle" font-size="12.5" font-weight="700" fill="#5a348f" font-family="Outfit, 'Noto Sans HK', sans-serif">$5.5</text>
-              </g>
-            </svg>
-          </g>
-          <g filter="url(#hero-soft)">
-            <path d="M62 86 L130 48 L198 86" fill="url(#hero-flap)" stroke="#5a9fd4" stroke-width="2.6" stroke-linejoin="round"/>
-            <rect x="62" y="84" width="136" height="72" rx="5" fill="url(#hero-env)" stroke="#5a9fd4" stroke-width="2.6"/>
-            <path d="M64 86 L130 128 L196 86" fill="none" stroke="#9cc5e0" stroke-width="1.7"/>
-            <path d="M62 86 L62 156" stroke="#e85d4c" stroke-width="3.2"/>
-            <path d="M198 86 L198 156" stroke="#3b82c4" stroke-width="3.2"/>
-            <path d="M66 86 H92" stroke="#e85d4c" stroke-width="3" stroke-linecap="round"/>
-            <path d="M96 86 H118" stroke="#3b82c4" stroke-width="3" stroke-linecap="round"/>
-            <path d="M142 86 H164" stroke="#3b82c4" stroke-width="3" stroke-linecap="round"/>
-            <path d="M168 86 H192" stroke="#e85d4c" stroke-width="3" stroke-linecap="round"/>
-            <path d="M66 156 H92" stroke="#e85d4c" stroke-width="3" stroke-linecap="round"/>
-            <path d="M96 156 H118" stroke="#3b82c4" stroke-width="3" stroke-linecap="round"/>
-            <path d="M142 156 H164" stroke="#3b82c4" stroke-width="3" stroke-linecap="round"/>
-            <path d="M168 156 H192" stroke="#e85d4c" stroke-width="3" stroke-linecap="round"/>
-          </g>
-          <g transform="translate(130 132)" filter="url(#hero-coin-soft)">
-            <rect x="-1.15" y="-36.5" width="2.3" height="4.2" rx="0.6" fill="#d9a01c" transform="rotate(0)"/><rect x="-1.15" y="-36.5" width="2.3" height="4.2" rx="0.6" fill="#d9a01c" transform="rotate(12.86)"/><rect x="-1.15" y="-36.5" width="2.3" height="4.2" rx="0.6" fill="#d9a01c" transform="rotate(25.71)"/><rect x="-1.15" y="-36.5" width="2.3" height="4.2" rx="0.6" fill="#d9a01c" transform="rotate(38.57)"/><rect x="-1.15" y="-36.5" width="2.3" height="4.2" rx="0.6" fill="#d9a01c" transform="rotate(51.43)"/><rect x="-1.15" y="-36.5" width="2.3" height="4.2" rx="0.6" fill="#d9a01c" transform="rotate(64.29)"/><rect x="-1.15" y="-36.5" width="2.3" height="4.2" rx="0.6" fill="#d9a01c" transform="rotate(77.14)"/><rect x="-1.15" y="-36.5" width="2.3" height="4.2" rx="0.6" fill="#d9a01c" transform="rotate(90)"/><rect x="-1.15" y="-36.5" width="2.3" height="4.2" rx="0.6" fill="#d9a01c" transform="rotate(102.86)"/><rect x="-1.15" y="-36.5" width="2.3" height="4.2" rx="0.6" fill="#d9a01c" transform="rotate(115.71)"/><rect x="-1.15" y="-36.5" width="2.3" height="4.2" rx="0.6" fill="#d9a01c" transform="rotate(128.57)"/><rect x="-1.15" y="-36.5" width="2.3" height="4.2" rx="0.6" fill="#d9a01c" transform="rotate(141.43)"/><rect x="-1.15" y="-36.5" width="2.3" height="4.2" rx="0.6" fill="#d9a01c" transform="rotate(154.29)"/><rect x="-1.15" y="-36.5" width="2.3" height="4.2" rx="0.6" fill="#d9a01c" transform="rotate(167.14)"/><rect x="-1.15" y="-36.5" width="2.3" height="4.2" rx="0.6" fill="#d9a01c" transform="rotate(180)"/><rect x="-1.15" y="-36.5" width="2.3" height="4.2" rx="0.6" fill="#d9a01c" transform="rotate(192.86)"/><rect x="-1.15" y="-36.5" width="2.3" height="4.2" rx="0.6" fill="#d9a01c" transform="rotate(205.71)"/><rect x="-1.15" y="-36.5" width="2.3" height="4.2" rx="0.6" fill="#d9a01c" transform="rotate(218.57)"/><rect x="-1.15" y="-36.5" width="2.3" height="4.2" rx="0.6" fill="#d9a01c" transform="rotate(231.43)"/><rect x="-1.15" y="-36.5" width="2.3" height="4.2" rx="0.6" fill="#d9a01c" transform="rotate(244.29)"/><rect x="-1.15" y="-36.5" width="2.3" height="4.2" rx="0.6" fill="#d9a01c" transform="rotate(257.14)"/><rect x="-1.15" y="-36.5" width="2.3" height="4.2" rx="0.6" fill="#d9a01c" transform="rotate(270)"/><rect x="-1.15" y="-36.5" width="2.3" height="4.2" rx="0.6" fill="#d9a01c" transform="rotate(282.86)"/><rect x="-1.15" y="-36.5" width="2.3" height="4.2" rx="0.6" fill="#d9a01c" transform="rotate(295.71)"/><rect x="-1.15" y="-36.5" width="2.3" height="4.2" rx="0.6" fill="#d9a01c" transform="rotate(308.57)"/><rect x="-1.15" y="-36.5" width="2.3" height="4.2" rx="0.6" fill="#d9a01c" transform="rotate(321.43)"/><rect x="-1.15" y="-36.5" width="2.3" height="4.2" rx="0.6" fill="#d9a01c" transform="rotate(334.29)"/><rect x="-1.15" y="-36.5" width="2.3" height="4.2" rx="0.6" fill="#d9a01c" transform="rotate(347.14)"/>
-            <circle r="33" fill="url(#hero-coin)" stroke="#f8e7a0" stroke-width="1.4"/>
-            <circle r="26.5" fill="none" stroke="#a56b12" stroke-width="1.15" opacity="0.55"/>
-            <circle r="24.5" fill="url(#hero-coin-inner)"/>
-            <text text-anchor="middle" y="10" font-size="28" font-weight="700" fill="#7a4a08" font-family="Outfit, 'Noto Sans HK', sans-serif">$</text>
-            <ellipse cx="-9" cy="-10" rx="8" ry="5" fill="#fff" opacity="0.28"/>
-          </g>
-        </svg>
-      </div>
+      <img class="hero-banner" src="og.jpg" alt="" />
       <h2>郵票組合計數機</h2>
       <p class="about-kicker"><i></i>STAMP COMBINATION CALCULATOR<i></i></p>
     </section>
@@ -733,7 +626,6 @@
         </a>
       </div>
       <p class="about-quote">本應用程式之介面及運算由Grok協助開發而成。</p>
-      <p class="about-quote">開源： <a href="https://github.com/imazi3594/stampcal" target="_blank" rel="noreferrer">github.com/imazi3594/stampcal</a></p>
       <div class="about-cta">
         <button type="button" class="share" id="share-app" data-share>
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" x2="12" y1="2" y2="15"/></svg>

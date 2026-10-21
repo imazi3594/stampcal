@@ -1,4 +1,4 @@
-const CACHE = "stamp-calc-v64";
+const CACHE = "stamp-calc-v68";
 const SHELL = ["./index.html", "./", "./manifest.webmanifest", "./favicon.svg", "./favicon-32.png", "./icon-192.png", "./icon-512.png", "./apple-touch-icon.png"];
 
 self.addEventListener("install", (event) => {
