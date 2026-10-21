@@ -36,7 +36,7 @@ export function AboutPage() {
   }
 
   return (
-    <div className="relative mx-auto flex w-full max-w-lg flex-col">
+    <div className="relative mx-auto flex w-full max-w-lg min-w-0 flex-col overflow-x-hidden">
       <header className="sticky top-0 z-10 flex items-center gap-1 bg-bg px-4 py-3 sm:px-6">
         <Link
           to="/"
@@ -48,13 +48,13 @@ export function AboutPage() {
         <h1 className="flex h-10 items-center text-lg leading-none font-semibold tracking-tight text-ink">關於</h1>
       </header>
 
-      <img src="/about-banner.jpg" alt="" className="block w-full" />
+      <img src="/about-banner.jpg" alt="" className="block w-full max-w-full min-w-0" />
 
       <div className="flex flex-col gap-12 px-4 pt-6 pb-8 sm:px-6">
 
       <section className="stagger-in overflow-visible text-center">
         <h2 className="mt-4 font-sans text-[1.65rem] font-bold tracking-tight text-ink">郵票組合計數機</h2>
-        <p className="mt-3 flex items-center justify-center gap-2.5 font-display text-[0.625rem] font-semibold tracking-[0.14em] text-primary">
+        <p className="mt-3 flex max-w-full flex-wrap items-center justify-center gap-2.5 px-1 font-display text-[0.625rem] font-semibold tracking-[0.08em] text-primary">
           <span className="h-px w-7 bg-primary/45" aria-hidden />
           STAMP COMBINATION CALCULATOR
           <span className="h-px w-7 bg-primary/45" aria-hidden />

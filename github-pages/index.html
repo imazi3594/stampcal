@@ -125,16 +125,16 @@
     .wrap.settings, .wrap.about { overflow: hidden; padding-bottom: 0; }
     .page-body { flex: 1 1 0; min-height: 0; overflow: auto; padding-bottom: 2rem; -webkit-overflow-scrolling: touch; }
     .wrap.settings .top, .wrap.about .top { z-index: 10; background: var(--bg); }
-    .wrap.about { gap: 0.5rem; padding: 0.75rem 1rem 0; }
-    .wrap.about .page-body { display: flex; flex-direction: column; gap: 3rem; padding-top: 0; padding-bottom: 2.5rem; }
-    .wrap.about .top { gap: 0.25rem; }
+    .wrap.about { gap: 0.5rem; padding: 0.75rem 0 0; overflow-x: hidden; }
+    .wrap.about .page-body { display: flex; flex-direction: column; gap: 3rem; min-width: 0; padding-top: 0; padding-bottom: 2.5rem; overflow-x: hidden; overflow-y: auto; }
+    .wrap.about .top { gap: 0.25rem; padding: 0 0.25rem 0 0.15rem; }
     .wrap.about .top h1 { margin: 0; }
-    .about-hero { display: block; text-align: center; overflow: visible; background: none; padding: 0.75rem 0 0; border-radius: 0; margin: 0 -1rem; }
-    .hero-banner { display: block; width: 100%; height: auto; border-radius: 0; }
-    .about-hero h2 { margin-top: 1rem; font-size: 1.65rem; font-weight: 700; letter-spacing: -0.02em; }
-    .about-kicker { display: flex; align-items: center; justify-content: center; gap: 0.6rem; margin: 0.75rem 0 0; font-family: var(--display); font-size: 0.625rem; font-weight: 600; letter-spacing: 0.14em; color: var(--primary); }
+    .about-hero { display: block; min-width: 0; max-width: 100%; text-align: center; overflow: hidden; background: none; padding: 0; border-radius: 0; margin: 0; }
+    .hero-banner { display: block; width: 100%; max-width: 100%; height: auto; border-radius: 0; }
+    .about-hero h2 { margin: 1rem 0 0; padding: 0 1rem; font-size: 1.65rem; font-weight: 700; letter-spacing: -0.02em; }
+    .about-kicker { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 0.6rem; max-width: 100%; margin: 0.75rem 0 0; padding: 0 1rem; font-family: var(--display); font-size: 0.625rem; font-weight: 600; letter-spacing: 0.08em; color: var(--primary); }
     .about-kicker i { display: block; width: 1.75rem; height: 1px; background: color-mix(in oklab, var(--primary) 45%, transparent); }
-    .about-section { padding: 0; }
+    .about-section { min-width: 0; max-width: 100%; padding: 0 1rem; }
     .about-h { display: flex; align-items: center; gap: 0.75rem; margin: 0 0 1.25rem; font-size: 1.0625rem; font-weight: 700; letter-spacing: -0.02em; line-height: 1; }
     .about-h::before { content: ""; width: 3px; height: 1.05em; border-radius: 999px; background: var(--primary); flex-shrink: 0; }
     .about-copy { margin: 0; font-size: 0.9375rem; line-height: 1.9; color: var(--muted); }
@@ -231,7 +231,7 @@
     .head-row > div { min-width: 0; flex: 1; }
     .head-row .btn { flex-shrink: 0; }
     h2 { margin: 0; font-size: 1.25rem; font-weight: 600; }
-    .about-end { display: flex; flex-direction: column; align-items: center; gap: 0.85rem; padding: 0.5rem 0 1.5rem; text-align: center; }
+    .about-end { display: flex; flex-direction: column; align-items: center; gap: 0.85rem; min-width: 0; max-width: 100%; padding: 0.5rem 1rem 1.5rem; text-align: center; }
     .about-powered a { display: inline-flex; align-items: center; gap: 0.55rem; padding: 0.35rem 0.6rem 0.35rem 0.35rem; border-radius: 999px; background: var(--surface); box-shadow: var(--shadow); color: var(--ink); text-decoration: none; }
     .about-powered .mark { width: 1.75rem; height: 1.75rem; display: inline-flex; align-items: center; justify-content: center; border-radius: 999px; background: color-mix(in oklab, var(--primary) 12%, var(--surface)); color: var(--primary); }
     .about-powered svg { width: 0.9rem; height: 0.9rem; }

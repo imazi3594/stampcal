@@ -10,7 +10,7 @@ export const Route = createFileRoute("/about")({
 
 function About() {
   return (
-    <main className="min-h-dvh bg-bg">
+    <main className="min-h-dvh overflow-x-hidden bg-bg">
       <AboutPage />
     </main>
   );
