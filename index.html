@@ -127,10 +127,11 @@
     .wrap.settings .top, .wrap.about .top { z-index: 10; background: var(--bg); }
     .wrap.about { gap: 0.5rem; padding: 0.75rem 0 0; overflow-x: hidden; }
     .wrap.about .page-body { display: flex; flex-direction: column; gap: 3rem; min-width: 0; padding-top: 0; padding-bottom: 2.5rem; overflow-x: hidden; overflow-y: auto; }
+    .wrap.about .page-body > * { flex: 0 0 auto; min-width: 0; max-width: 100%; }
     .wrap.about .top { gap: 0.25rem; padding: 0 0.25rem 0 0.15rem; }
     .wrap.about .top h1 { margin: 0; }
-    .about-hero { display: block; min-width: 0; max-width: 100%; text-align: center; overflow: hidden; background: none; padding: 0; border-radius: 0; margin: 0; }
-    .hero-banner { display: block; width: 100%; max-width: 100%; height: auto; border-radius: 0; }
+    .about-hero { display: block; text-align: center; background: none; padding: 0; margin: 0; }
+    .hero-banner { display: block; width: 100%; max-width: 100%; height: auto; }
     .about-hero h2 { margin: 1rem 0 0; padding: 0 1rem; font-size: 1.65rem; font-weight: 700; letter-spacing: -0.02em; }
     .about-kicker { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 0.6rem; max-width: 100%; margin: 0.75rem 0 0; padding: 0 1rem; font-family: var(--display); font-size: 0.625rem; font-weight: 600; letter-spacing: 0.08em; color: var(--primary); }
     .about-kicker i { display: block; width: 1.75rem; height: 1px; background: color-mix(in oklab, var(--primary) 45%, transparent); }

@@ -48,7 +48,7 @@ export function AboutPage() {
         <h1 className="flex h-10 items-center text-lg leading-none font-semibold tracking-tight text-ink">關於</h1>
       </header>
 
-      <img src="/about-banner.jpg" alt="" className="block w-full max-w-full min-w-0" />
+      <img src="/about-banner.jpg" alt="" className="block h-auto w-full max-w-full shrink-0" />
 
       <div className="flex flex-col gap-12 px-4 pt-6 pb-8 sm:px-6">
 
