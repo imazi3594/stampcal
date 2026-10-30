@@ -5,7 +5,7 @@ import { loadSaved } from "@/lib/stamp-settings";
 import { applyCrisis, applySolveMode } from "@/lib/theme";
 
 const FEATURES = [
-  { icon: "✨", title: "自訂面值", body: "支援紀念郵票、特別郵票或舊款郵票面額。" },
+  { icon: "✨", title: "自訂面值", body: "支援紀念郵票、特別郵票或舊款郵票面值。" },
   { icon: "📦", title: "庫存管理", body: "可隨時將缺貨的通用郵票標示為缺貨，組合僅計算有貨面值。" },
   { icon: "🌐", title: "離線使用", body: "採用 PWA 技術，沒有網絡也能照常運算。" },
   { icon: "🌙", title: "深色模式", body: "支援淺色／深色主題，呵護雙眼。" },
@@ -42,7 +42,7 @@ export function AboutPage() {
   function sendFeedback() {
     const text = feedback.trim();
     if (!text) {
-      setFeedbackNote("請先寫低意見。");
+      setFeedbackNote("請先填寫意見。");
       return;
     }
     const href = `mailto:nova0818@gmail.com?subject=${encodeURIComponent("郵票計數機意見")}&body=${encodeURIComponent(text)}`;
@@ -132,7 +132,7 @@ export function AboutPage() {
 
       <section className="stagger-in" style={{ animationDelay: "200ms" }}>
         <SectionTitle>提供意見</SectionTitle>
-        <p className="mt-5 text-sm leading-[1.8] text-muted">寫低短評，會用電郵寄出。唔使上網都可以開電郵程式。</p>
+        <p className="mt-5 text-sm leading-[1.8] text-muted">請填寫簡短意見，將以電郵送出。沒有網絡時亦可開啟電郵程式。</p>
         {feedbackOpen ? (
           <form
             className="mt-4 flex flex-col gap-3"
@@ -145,7 +145,7 @@ export function AboutPage() {
               value={feedback}
               maxLength={500}
               rows={4}
-              placeholder="有咩想講？"
+              placeholder="請輸入意見"
               aria-label="意見內容"
               onChange={(event) => {
                 setFeedback(event.target.value);

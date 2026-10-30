@@ -618,7 +618,7 @@
     <section class="about-section">
       <h2 class="about-h">核心功能</h2>
       <ul class="feat-list">
-        <li><span class="emo">✨</span><div><b>自訂面值</b><span>支援紀念郵票、特別郵票或舊款郵票面額。</span></div></li>
+        <li><span class="emo">✨</span><div><b>自訂面值</b><span>支援紀念郵票、特別郵票或舊款郵票面值。</span></div></li>
         <li><span class="emo">📦</span><div><b>庫存管理</b><span>可隨時將缺貨的通用郵票標示為缺貨，組合僅計算有貨面值。</span></div></li>
         <li><span class="emo">🌐</span><div><b>離線使用</b><span>採用 PWA 技術，沒有網絡也能照常運算。</span></div></li>
         <li><span class="emo">🌙</span><div><b>深色模式</b><span>支援淺色／深色主題，呵護雙眼。</span></div></li>
@@ -626,10 +626,10 @@
     </section>
     <section class="about-section feedback">
       <h2 class="about-h">提供意見</h2>
-      <p>寫低短評，會用電郵寄出。唔使上網都可以開電郵程式。</p>
+      <p>請填寫簡短意見，將以電郵送出。沒有網絡時亦可開啟電郵程式。</p>
       <button type="button" class="feedback-open" id="feedback-open">提供意見</button>
       <form id="feedback-form" hidden>
-        <textarea id="feedback-text" maxlength="500" placeholder="有咩想講？" aria-label="意見內容"></textarea>
+        <textarea id="feedback-text" maxlength="500" placeholder="請輸入意見" aria-label="意見內容"></textarea>
         <div class="feedback-actions">
           <button type="button" class="feedback-cancel" id="feedback-cancel">取消</button>
           <button type="submit" class="feedback-send">送出</button>
@@ -1470,7 +1470,7 @@
         event.preventDefault();
         var text = feedbackText.value.trim();
         if (!text) {
-          showFeedbackNote("請先寫低意見。");
+          showFeedbackNote("請先填寫意見。");
           return;
         }
         location.href = "mailto:nova0818@gmail.com?subject=" + encodeURIComponent("郵票計數機意見") + "&body=" + encodeURIComponent(text);

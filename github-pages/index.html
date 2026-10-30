@@ -631,7 +631,7 @@
     <section class="about-section">
       <h2 class="about-h">核心功能</h2>
       <ul class="feat-list">
-        <li><span class="emo">✨</span><div><b>自訂面值</b><span>支援紀念郵票、特別郵票或舊款郵票面額。</span></div></li>
+        <li><span class="emo">✨</span><div><b>自訂面值</b><span>支援紀念郵票、特別郵票或舊款郵票面值。</span></div></li>
         <li><span class="emo">📦</span><div><b>庫存管理</b><span>可隨時將缺貨的通用郵票標示為缺貨，組合僅計算有貨面值。</span></div></li>
         <li><span class="emo">🌐</span><div><b>離線使用</b><span>採用 PWA 技術，沒有網絡也能照常運算。</span></div></li>
         <li><span class="emo">🌙</span><div><b>深色模式</b><span>支援淺色／深色主題，呵護雙眼。</span></div></li>
@@ -678,7 +678,7 @@
     <div class="feedback-card" role="dialog" aria-modal="true" aria-label="提供意見">
       <button type="button" class="feedback-close" id="feedback-close" aria-label="關閉">×</button>
       <h3>提供意見</h3>
-      <p class="hint">姓名同意見必填。</p>
+      <p class="hint">姓名與意見均須填寫。</p>
       <label for="fb-name">姓名 <span class="req">*</span></label>
       <input id="fb-name" name="name" type="text" autocomplete="name" maxlength="80" required />
 <label for="fb-opinion">意見 <span class="req">*</span></label>
@@ -1506,7 +1506,7 @@
         var opinion = (opinionEl.value || "").trim();
         statusEl.className = "feedback-status";
         if (!name || !opinion) {
-          statusEl.textContent = "請填姓名同意見。";
+          statusEl.textContent = "請填寫姓名與意見。";
           statusEl.classList.add("err");
           return;
         }
@@ -1525,7 +1525,7 @@
           headers: { "Content-Type": "text/plain;charset=utf-8" },
           body: JSON.stringify(payload)
         }).then(function () {
-            statusEl.textContent = "已送出，多謝意見。";
+            statusEl.textContent = "已送出，感謝您的意見。";
             statusEl.classList.add("ok");
             nameEl.value = "";
             opinionEl.value = "";
