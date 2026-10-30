@@ -1,4 +1,4 @@
-const CACHE = "stamp-calc-v77";
+const CACHE = "stamp-calc-v78";
 const SHELL = ["./index.html", "./", "./manifest.webmanifest", "./about-banner.jpg", "./favicon.svg", "./favicon-32.png", "./icon-192.png", "./icon-512.png", "./apple-touch-icon.png"];
 
 self.addEventListener("install", (event) => {
@@ -14,15 +14,9 @@ self.addEventListener("install", (event) => {
 self.addEventListener("activate", (event) => {
   event.waitUntil(
     (async () => {
-      const cache = await caches.open(CACHE);
       const names = await caches.keys();
       for (const name of names) {
         if (name === CACHE) continue;
-        const old = await caches.open(name);
-        for (const req of await old.keys()) {
-          const res = await old.match(req);
-          if (res) await put(cache, req, res);
-        }
         await caches.delete(name);
       }
       await self.clients.claim();
@@ -114,9 +108,9 @@ self.addEventListener("fetch", (event) => {
       const cache = await caches.open(CACHE);
       const document = isDocument(request);
       const reload = request.cache === "reload" || request.cache === "no-store";
-      const cached = document ? await cachedDocument(cache, request) : await cache.match(request, { ignoreSearch: true });
+      const cachedAsset = document ? null : await cache.match(request, { ignoreSearch: true });
 
-      if (cached && !reload) return cached;
+      if (!document && cachedAsset && !reload) return cachedAsset;
 
       if (poorNetwork() && document) {
         const page = await cachedDocument(cache, request);
@@ -131,7 +125,8 @@ self.addEventListener("fetch", (event) => {
         }
         return response;
       } catch {
-        return (await cachedDocument(cache, request)) || Response.error();
+        if (document) return (await cachedDocument(cache, request)) || Response.error();
+        return cachedAsset || Response.error();
       }
     })(),
   );
