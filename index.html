@@ -240,23 +240,13 @@
     .about-powered .built { font-size: 0.625rem; font-weight: 600; letter-spacing: 0.16em; color: var(--subtle); }
     .about-powered .name { font-family: var(--display); font-size: 0.95rem; font-weight: 600; letter-spacing: -0.02em; }
     .about-powered .ai { display: inline-block; margin-left: 0.15rem; padding: 0.1rem 0.4rem; border-radius: 0.35rem; background: color-mix(in oklab, var(--primary) 12%, var(--surface)); color: var(--primary); font-family: var(--display); font-size: 0.625rem; font-weight: 700; letter-spacing: 0.06em; }
+    .about-credit { display: flex; width: 100%; align-items: center; justify-content: center; gap: 0.4rem; }
+    .about-mini { flex: 0 0 auto; width: 2.25rem; height: 2.25rem; display: inline-flex; align-items: center; justify-content: center; border: 0; border-radius: 999px; background: var(--surface); color: var(--ink); box-shadow: var(--shadow); text-decoration: none; }
+    .about-mini svg { width: 1rem; height: 1rem; }
+    .about-mini:hover { background: var(--surface-2); }
     .about-quote { margin: 0; max-width: 22rem; padding: 0 0.25rem; font-size: 0.875rem; line-height: 1.85; color: var(--subtle); font-style: normal; }
     .about-quote a { color: var(--ink); text-decoration: underline; text-underline-offset: 2px; text-decoration-color: var(--border); }
-    .about-cta { display: flex; width: 100%; gap: 0.75rem; margin-top: 0.25rem; }
-    .about-cta button, .about-cta a { flex: 1; height: 3rem; display: inline-flex; align-items: center; justify-content: center; gap: 0.4rem; border: 0; border-radius: 999px; font: inherit; font-size: 0.875rem; font-weight: 600; }
-    .about-cta .share { background: var(--surface-2); color: var(--ink); }
-    .about-cta .home { background: var(--primary); color: var(--primary-fg); }
-    .feedback { width: 100%; text-align: left; }
-    .feedback p { margin: 0 0 0.85rem; font-size: 0.875rem; line-height: 1.8; color: var(--muted); }
-    .feedback-open, .feedback-send { width: 100%; height: 3rem; border: 0; border-radius: 999px; font: inherit; font-size: 0.875rem; font-weight: 600; }
-    .feedback-open { background: var(--surface); color: var(--ink); box-shadow: var(--shadow); }
-    .feedback textarea { width: 100%; min-height: 7rem; resize: none; border: 1px solid color-mix(in oklab, var(--border) 80%, transparent); border-radius: 1rem; background: var(--surface); color: var(--ink); box-shadow: var(--shadow); padding: 0.85rem 1rem; font: inherit; font-size: 0.875rem; line-height: 1.8; }
-    .feedback textarea:focus { outline: 2px solid color-mix(in oklab, var(--primary) 45%, transparent); outline-offset: 1px; }
-    .feedback-actions { display: flex; gap: 0.75rem; margin-top: 0.75rem; }
-    .feedback-actions button { flex: 1; height: 3rem; border: 0; border-radius: 999px; font: inherit; font-size: 0.875rem; font-weight: 600; }
-    .feedback-cancel { background: var(--surface-2); color: var(--ink); }
-    .feedback-send { background: var(--primary); color: var(--primary-fg); }
-    .feedback-note { margin: 0.65rem 0 0; font-size: 0.875rem; color: var(--muted); }
+    .about-home { width: 100%; height: 3rem; display: inline-flex; align-items: center; justify-content: center; border-radius: 999px; background: var(--primary); color: var(--primary-fg); font-size: 0.875rem; font-weight: 600; text-decoration: none; }
     .hint { margin: 0.25rem 0 0; font-size: 0.875rem; color: var(--muted); }
     .actions { display: flex; gap: 0.5rem; }
     .btn { display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; height: 2.25rem; padding: 0 0.75rem; border: 1px solid var(--border); border-radius: 0.5rem; font-size: 0.875rem; font-weight: 500; background: var(--surface); color: var(--ink); box-shadow: var(--shadow); }
@@ -624,41 +614,30 @@
         <li><span class="emo">🌙</span><div><b>深色模式</b><span>支援淺色／深色主題，呵護雙眼。</span></div></li>
       </ul>
     </section>
-    <section class="about-section feedback">
-      <h2 class="about-h">提供意見</h2>
-      <p>寫低短評，會用電郵寄出。唔使上網都可以開電郵程式。</p>
-      <button type="button" class="feedback-open" id="feedback-open">提供意見</button>
-      <form id="feedback-form" hidden>
-        <textarea id="feedback-text" maxlength="500" placeholder="有咩想講？" aria-label="意見內容"></textarea>
-        <div class="feedback-actions">
-          <button type="button" class="feedback-cancel" id="feedback-cancel">取消</button>
-          <button type="submit" class="feedback-send">送出</button>
-        </div>
-        <p class="feedback-note" id="feedback-note" hidden></p>
-      </form>
-    </section>
     <footer class="about-end">
-      <div class="about-powered">
-        <a href="https://grok.com" target="_blank" rel="noreferrer">
-          <span class="mark">
-            <svg viewBox="0 0 12 11.5714" aria-hidden="true">
-              <path fill="currentColor" d="M4.63453 7.42767L8.62395 4.46607C8.81953 4.32088 9.09907 4.37752 9.19225 4.60303C9.68274 5.79241 9.46361 7.22172 8.48776 8.20308C7.5119 9.18444 6.15411 9.39966 4.91305 8.9095L3.5573 9.54074C5.50184 10.8774 7.86313 10.5468 9.33868 9.0619C10.5091 7.88488 10.8716 6.28051 10.5326 4.8337L10.5357 4.83679C10.0442 2.71136 10.6565 1.86181 11.9109 0.124601C11.9406 0.0834107 11.9703 0.0422202 12 0L10.3493 1.65998V1.65483L4.6335 7.4287"/>
-              <path fill="currentColor" d="M3.81125 8.14747C2.41556 6.80672 2.6562 4.73175 3.84709 3.53517C4.72771 2.64958 6.17049 2.28813 7.42999 2.81949L8.78266 2.19133C8.53895 2.01421 8.22664 1.82371 7.86825 1.68984C6.24832 1.01946 4.3089 1.35311 2.99206 2.67635C1.7254 3.95016 1.32708 5.90877 2.01109 7.58007C2.52206 8.82917 1.68444 9.71271 0.840686 10.6045C0.541684 10.9206 0.241659 11.2368 0 11.5714L3.81022 8.1485"/>
-            </svg>
-          </span>
-          <span class="built">BUILT WITH</span>
-          <span class="name">Grok</span>
-          <span class="ai">AI</span>
+      <div class="about-credit">
+        <div class="about-powered">
+          <a href="https://grok.com" target="_blank" rel="noreferrer">
+            <span class="mark">
+              <svg viewBox="0 0 12 11.5714" aria-hidden="true">
+                <path fill="currentColor" d="M4.63453 7.42767L8.62395 4.46607C8.81953 4.32088 9.09907 4.37752 9.19225 4.60303C9.68274 5.79241 9.46361 7.22172 8.48776 8.20308C7.5119 9.18444 6.15411 9.39966 4.91305 8.9095L3.5573 9.54074C5.50184 10.8774 7.86313 10.5468 9.33868 9.0619C10.5091 7.88488 10.8716 6.28051 10.5326 4.8337L10.5357 4.83679C10.0442 2.71136 10.6565 1.86181 11.9109 0.124601C11.9406 0.0834107 11.9703 0.0422202 12 0L10.3493 1.65998V1.65483L4.6335 7.4287"/>
+                <path fill="currentColor" d="M3.81125 8.14747C2.41556 6.80672 2.6562 4.73175 3.84709 3.53517C4.72771 2.64958 6.17049 2.28813 7.42999 2.81949L8.78266 2.19133C8.53895 2.01421 8.22664 1.82371 7.86825 1.68984C6.24832 1.01946 4.3089 1.35311 2.99206 2.67635C1.7254 3.95016 1.32708 5.90877 2.01109 7.58007C2.52206 8.82917 1.68444 9.71271 0.840686 10.6045C0.541684 10.9206 0.241659 11.2368 0 11.5714L3.81022 8.1485"/>
+              </svg>
+            </span>
+            <span class="built">BUILT WITH</span>
+            <span class="name">Grok</span>
+            <span class="ai">AI</span>
+          </a>
+        </div>
+        <a class="about-mini" href="mailto:nova0818@gmail.com?subject=%E9%83%B5%E7%A5%A8%E8%A8%88%E6%95%B8%E6%A9%9F%E6%84%8F%E8%A6%8B" aria-label="提供意見">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
         </a>
+        <button type="button" class="about-mini" data-share aria-label="分享程式">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" x2="12" y1="2" y2="15"/></svg>
+        </button>
       </div>
       <p class="about-quote">本應用程式之介面及運算由Grok協助開發而成。</p>
-      <div class="about-cta">
-        <button type="button" class="share" id="share-app" data-share>
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" x2="12" y1="2" y2="15"/></svg>
-          分享程式
-        </button>
-        <a class="home" href="#home" data-go="home">返回首頁</a>
-      </div>
+      <a class="about-home" href="#home" data-go="home">返回首頁</a>
     </footer>
     </div>
   </main>
@@ -1437,7 +1416,7 @@
             return;
           }
           await navigator.clipboard.writeText(url);
-          if (!btn || btn.classList.contains("icon-btn")) return;
+          if (!btn || btn.classList.contains("icon-btn") || btn.classList.contains("about-mini")) return;
           const prev = btn.childNodes[btn.childNodes.length - 1];
           const old = prev && prev.textContent;
           if (prev) prev.textContent = " 已複製連結";
@@ -1446,34 +1425,6 @@
       }
       document.querySelectorAll("[data-share]").forEach(function (btn) {
         btn.addEventListener("click", function () { shareFrom(btn); });
-      });
-      var feedbackOpen = document.getElementById("feedback-open");
-      var feedbackForm = document.getElementById("feedback-form");
-      var feedbackText = document.getElementById("feedback-text");
-      var feedbackNote = document.getElementById("feedback-note");
-      function showFeedbackNote(text) {
-        feedbackNote.hidden = !text;
-        feedbackNote.textContent = text || "";
-      }
-      feedbackOpen.addEventListener("click", function () {
-        feedbackOpen.hidden = true;
-        feedbackForm.hidden = false;
-        feedbackText.focus();
-      });
-      document.getElementById("feedback-cancel").addEventListener("click", function () {
-        feedbackForm.hidden = true;
-        feedbackOpen.hidden = false;
-        showFeedbackNote("");
-      });
-      feedbackForm.addEventListener("submit", function (event) {
-        event.preventDefault();
-        var text = feedbackText.value.trim();
-        if (!text) {
-          showFeedbackNote("請先寫低意見。");
-          return;
-        }
-        location.href = "mailto:nova0818@gmail.com?subject=" + encodeURIComponent("郵票計數機意見") + "&body=" + encodeURIComponent(text);
-        showFeedbackNote("已開啟電郵程式，請按發送。");
       });
     })();
     showPage(pageFromHash());
