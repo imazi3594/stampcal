@@ -12,7 +12,7 @@
   <script>try{if(localStorage.getItem("stamp-calc-theme")==="dark"){document.documentElement.classList.add("dark");document.documentElement.style.colorScheme="dark"}var s=JSON.parse(localStorage.getItem("stamp-calc-v2")||"{}");if(s.mode==="types")document.documentElement.classList.add("types")}catch(e){}
   window.addEventListener("beforeinstallprompt",function(e){e.preventDefault();window.__pwaDeferred=e;});
   if("serviceWorker"in navigator){navigator.serviceWorker.register(new URL("sw.js",document.baseURI).href,{updateViaCache:"all"}).catch(function(){});}
-  window.addEventListener("load",function(){if(!("caches"in window)||!navigator.onLine)return;var link=navigator.connection;if(link&&(link.saveData||link.effectiveType==="slow-2g"||link.effectiveType==="2g"||link.rtt>=900))return;setTimeout(function(){caches.open("stamp-calc-v78").then(function(cache){["index.html","manifest.webmanifest","about-banner.jpg"].forEach(function(name){var url=new URL(name,document.baseURI).href;var ctrl=new AbortController();var timer=setTimeout(function(){ctrl.abort();},4000);fetch(url,{cache:"no-store",signal:ctrl.signal}).then(function(res){clearTimeout(timer);if(res&&res.ok)return cache.put(url,res);}).catch(function(){clearTimeout(timer);});});}).catch(function(){});},1200);});
+  window.addEventListener("load",function(){if(!("caches"in window)||!navigator.onLine)return;var link=navigator.connection;if(link&&(link.saveData||link.effectiveType==="slow-2g"||link.effectiveType==="2g"||link.rtt>=900))return;setTimeout(function(){caches.open("stamp-calc-v79").then(function(cache){["index.html","manifest.webmanifest","about-banner.jpg"].forEach(function(name){var url=new URL(name,document.baseURI).href;var ctrl=new AbortController();var timer=setTimeout(function(){ctrl.abort();},4000);fetch(url,{cache:"no-store",signal:ctrl.signal}).then(function(res){clearTimeout(timer);if(res&&res.ok)return cache.put(url,res);}).catch(function(){clearTimeout(timer);});});}).catch(function(){});},1200);});
   (function(){function editable(t){return t&&t.closest&&t.closest("input,textarea,[contenteditable=true]");}function block(e){if(!editable(e.target))e.preventDefault();}document.addEventListener("selectstart",block);document.addEventListener("copy",block);document.addEventListener("cut",block);document.addEventListener("contextmenu",block);})();</script>
   <link rel="manifest" href="manifest.webmanifest" />
   <link rel="apple-touch-icon" href="apple-touch-icon.png" />
@@ -674,7 +674,7 @@
   </div>
 
 
-  <div id="feedback-sheet" class="feedback-sheet" data-ver="v78" aria-hidden="true">
+  <div id="feedback-sheet" class="feedback-sheet" data-ver="v79" aria-hidden="true">
     <div class="feedback-card" role="dialog" aria-modal="true" aria-label="提供意見">
       <button type="button" class="feedback-close" id="feedback-close" aria-label="關閉">×</button>
       <h3>提供意見</h3>
@@ -1472,7 +1472,7 @@
 
     (function setupFeedback() {
       var FEEDBACK_ENDPOINT = "https://api.web3forms.com/submit";
-      var FEEDBACK_ACCESS_KEY = "f51c0661-9390-43ae-846b-72b1016c09aa";
+      var FEEDBACK_ACCESS_KEY = "e954a76d-fdbb-4774-8da1-e90b5069e531";
       var sheet = document.getElementById("feedback-sheet");
       var statusEl = document.getElementById("feedback-status");
       var nameEl = document.getElementById("fb-name");
