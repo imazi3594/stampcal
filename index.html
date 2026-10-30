@@ -12,7 +12,7 @@
   <script>try{if(localStorage.getItem("stamp-calc-theme")==="dark"){document.documentElement.classList.add("dark");document.documentElement.style.colorScheme="dark"}var s=JSON.parse(localStorage.getItem("stamp-calc-v2")||"{}");if(s.mode==="types")document.documentElement.classList.add("types")}catch(e){}
   window.addEventListener("beforeinstallprompt",function(e){e.preventDefault();window.__pwaDeferred=e;});
   if("serviceWorker"in navigator){navigator.serviceWorker.register(new URL("sw.js",document.baseURI).href,{updateViaCache:"all"}).catch(function(){});}
-  window.addEventListener("load",function(){if(!("caches"in window)||!navigator.onLine)return;var link=navigator.connection;if(link&&(link.saveData||link.effectiveType==="slow-2g"||link.effectiveType==="2g"||link.rtt>=900))return;setTimeout(function(){caches.open("stamp-calc-v79").then(function(cache){["index.html","manifest.webmanifest","about-banner.jpg"].forEach(function(name){var url=new URL(name,document.baseURI).href;var ctrl=new AbortController();var timer=setTimeout(function(){ctrl.abort();},4000);fetch(url,{cache:"no-store",signal:ctrl.signal}).then(function(res){clearTimeout(timer);if(res&&res.ok)return cache.put(url,res);}).catch(function(){clearTimeout(timer);});});}).catch(function(){});},1200);});
+  window.addEventListener("load",function(){if(!("caches"in window)||!navigator.onLine)return;var link=navigator.connection;if(link&&(link.saveData||link.effectiveType==="slow-2g"||link.effectiveType==="2g"||link.rtt>=900))return;setTimeout(function(){caches.open("stamp-calc-v80").then(function(cache){["index.html","manifest.webmanifest","about-banner.jpg"].forEach(function(name){var url=new URL(name,document.baseURI).href;var ctrl=new AbortController();var timer=setTimeout(function(){ctrl.abort();},4000);fetch(url,{cache:"no-store",signal:ctrl.signal}).then(function(res){clearTimeout(timer);if(res&&res.ok)return cache.put(url,res);}).catch(function(){clearTimeout(timer);});});}).catch(function(){});},1200);});
   (function(){function editable(t){return t&&t.closest&&t.closest("input,textarea,[contenteditable=true]");}function block(e){if(!editable(e.target))e.preventDefault();}document.addEventListener("selectstart",block);document.addEventListener("copy",block);document.addEventListener("cut",block);document.addEventListener("contextmenu",block);})();</script>
   <link rel="manifest" href="manifest.webmanifest" />
   <link rel="apple-touch-icon" href="apple-touch-icon.png" />
@@ -674,7 +674,7 @@
   </div>
 
 
-  <div id="feedback-sheet" class="feedback-sheet" data-ver="v79" aria-hidden="true">
+  <div id="feedback-sheet" class="feedback-sheet" data-ver="v80" aria-hidden="true">
     <div class="feedback-card" role="dialog" aria-modal="true" aria-label="提供意見">
       <button type="button" class="feedback-close" id="feedback-close" aria-label="關閉">×</button>
       <h3>提供意見</h3>
@@ -1471,8 +1471,7 @@
     showPage(pageFromHash());
 
     (function setupFeedback() {
-      var FEEDBACK_ENDPOINT = "https://api.web3forms.com/submit";
-      var FEEDBACK_ACCESS_KEY = "e954a76d-fdbb-4774-8da1-e90b5069e531";
+      var FEEDBACK_ENDPOINT = "https://script.google.com/macros/s/AKfycbz8_2RRmj-tJFJsuqbpSIdbGlTdBHTPeDuiWnrPd2MJHjNvAxarAOBgxhRF75VaTWX1/exec";
       var sheet = document.getElementById("feedback-sheet");
       var statusEl = document.getElementById("feedback-status");
       var nameEl = document.getElementById("fb-name");
@@ -1503,7 +1502,6 @@
       sheet.addEventListener("click", function (e) { if (e.target === sheet) closeFb(); });
       sendBtn.addEventListener("click", function () {
         var name = (nameEl.value || "").trim();
-        var email = "";
         var opinion = (opinionEl.value || "").trim();
         statusEl.className = "feedback-status";
         if (!name || !opinion) {
@@ -1511,30 +1509,21 @@
           statusEl.classList.add("err");
           return;
         }
-        if (!FEEDBACK_ACCESS_KEY || FEEDBACK_ACCESS_KEY.indexOf("__WEB3FORMS") === 0) {
-          statusEl.textContent = "意見通道尚未就緒，請稍後再試。";
-          statusEl.classList.add("err");
-          return;
-        }
         sendBtn.disabled = true;
         sendBtn.textContent = "送出中…";
         statusEl.textContent = "";
         var payload = {
-          access_key: FEEDBACK_ACCESS_KEY,
-          subject: "郵票計數機意見",
-          from_name: name,
           name: name,
-          email: email || "未填",
-          message: opinion,
-          opinion: opinion
+          opinion: opinion,
+          message: opinion
         };
+        // text/plain + no-cors: Apps Script /exec 無可用 CORS；opaque 完成即當成功
         fetch(FEEDBACK_ENDPOINT, {
           method: "POST",
-          headers: { "Content-Type": "application/json", "Accept": "application/json" },
+          mode: "no-cors",
+          headers: { "Content-Type": "text/plain;charset=utf-8" },
           body: JSON.stringify(payload)
-        }).then(function (res) { return res.json().then(function (data) { return { ok: res.ok && data && data.success !== false, data: data }; }).catch(function () { return { ok: res.ok, data: null }; }); })
-          .then(function (result) {
-            if (!result.ok) throw new Error((result.data && result.data.message) || "送出失敗");
+        }).then(function () {
             statusEl.textContent = "已送出，多謝意見。";
             statusEl.classList.add("ok");
             nameEl.value = "";
