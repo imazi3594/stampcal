@@ -27,7 +27,7 @@ export function isIos(): boolean {
 export function registerServiceWorker() {
   if (typeof navigator === "undefined" || !("serviceWorker" in navigator)) return Promise.resolve();
   const url = new URL("sw.js", document.baseURI).href;
-  return navigator.serviceWorker.register(url).catch(() => undefined);
+  return navigator.serviceWorker.register(url, { updateViaCache: "all" }).catch(() => undefined);
 }
 
 export function waitForInstallPrompt(ms = 2500): Promise<BeforeInstallPromptEvent | null> {

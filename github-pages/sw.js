@@ -1,4 +1,4 @@
-const CACHE = "stamp-calc-v72";
+const CACHE = "stamp-calc-v75";
 const SHELL = ["./index.html", "./", "./manifest.webmanifest", "./about-banner.jpg", "./favicon.svg", "./favicon-32.png", "./icon-192.png", "./icon-512.png", "./apple-touch-icon.png"];
 
 self.addEventListener("install", (event) => {
@@ -43,36 +43,55 @@ function isDocument(request) {
   return (request.headers.get("accept") || "").includes("text/html");
 }
 
+function poorNetwork() {
+  if (!self.navigator.onLine) return true;
+  const link = self.navigator.connection;
+  if (!link) return false;
+  if (link.saveData) return true;
+  if (link.effectiveType === "slow-2g" || link.effectiveType === "2g") return true;
+  if (typeof link.rtt === "number" && link.rtt >= 900) return true;
+  if (typeof link.downlink === "number" && link.downlink > 0 && link.downlink < 0.35) return true;
+  return false;
+}
+
+function fetchTimed(request, ms) {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), ms);
+  return fetch(request, { signal: controller.signal }).finally(() => clearTimeout(timer));
+}
+
 async function put(cache, request, response) {
   if (!response || !response.ok) return;
-  const body = await response.clone().blob();
-  const copy = new Response(body, {
-    status: response.status,
-    statusText: response.statusText,
-    headers: new Headers(response.headers),
-  });
-  await cache.put(request, copy).catch(() => {});
+  try {
+    const body = await response.clone().blob();
+    await cache.put(
+      request,
+      new Response(body, {
+        status: response.status,
+        statusText: response.statusText,
+        headers: new Headers(response.headers),
+      }),
+    );
+  } catch {
+    /* ignore */
+  }
 }
 
 async function warm(cache, url) {
   try {
-    const response = await fetch(url, { cache: "reload" });
+    const response = await fetchTimed(url, 3000);
     if (!response.ok) return;
     await put(cache, url, response);
-    if (isHtml(response)) await put(cache, "./index.html", response);
+    if ((response.headers.get("content-type") || "").includes("text/html")) await put(cache, "./index.html", response);
   } catch {
-    /* offline install keeps whatever was migrated */
+    /* activate still proceeds with the previous copy */
   }
 }
 
-function isHtml(response) {
-  return (response.headers.get("content-type") || "").includes("text/html");
-}
-
 async function cachedDocument(cache, request) {
-  const hit = await cache.match(request, { ignoreSearch: true });
-  if (hit) return hit;
-  for (const url of ["./index.html", "./", "index.html", "/"]) {
+  const direct = await cache.match(request, { ignoreSearch: true });
+  if (direct) return direct;
+  for (const url of ["./index.html", "./", "index.html"]) {
     const page = await cache.match(url, { ignoreSearch: true });
     if (page) return page;
   }
@@ -94,19 +113,25 @@ self.addEventListener("fetch", (event) => {
     (async () => {
       const cache = await caches.open(CACHE);
       const document = isDocument(request);
+      const reload = request.cache === "reload" || request.cache === "no-store";
       const cached = document ? await cachedDocument(cache, request) : await cache.match(request, { ignoreSearch: true });
 
-      if (!self.navigator.onLine) return cached || Response.error();
+      if (cached && !reload) return cached;
+
+      if (poorNetwork() && document) {
+        const page = await cachedDocument(cache, request);
+        if (page) return page;
+      }
 
       try {
-        const response = await fetch(request);
+        const response = await fetchTimed(request, poorNetwork() ? 1500 : 8000);
         if (response && response.ok) {
           await put(cache, request, response);
           if (document) await put(cache, "./index.html", response);
         }
         return response;
       } catch {
-        return cached || Response.error();
+        return (await cachedDocument(cache, request)) || Response.error();
       }
     })(),
   );

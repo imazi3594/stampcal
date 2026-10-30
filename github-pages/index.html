@@ -11,7 +11,8 @@
   <title>郵票組合計數機</title>
   <script>try{if(localStorage.getItem("stamp-calc-theme")==="dark"){document.documentElement.classList.add("dark");document.documentElement.style.colorScheme="dark"}var s=JSON.parse(localStorage.getItem("stamp-calc-v2")||"{}");if(s.mode==="types")document.documentElement.classList.add("types")}catch(e){}
   window.addEventListener("beforeinstallprompt",function(e){e.preventDefault();window.__pwaDeferred=e;});
-  if("serviceWorker"in navigator){navigator.serviceWorker.register(new URL("sw.js",document.baseURI).href).catch(function(){});}
+  if("serviceWorker"in navigator){navigator.serviceWorker.register(new URL("sw.js",document.baseURI).href,{updateViaCache:"all"}).catch(function(){});}
+  window.addEventListener("load",function(){if(!("caches"in window)||!navigator.onLine)return;var link=navigator.connection;if(link&&(link.saveData||link.effectiveType==="slow-2g"||link.effectiveType==="2g"||link.rtt>=900))return;setTimeout(function(){caches.open("stamp-calc-v75").then(function(cache){["index.html","manifest.webmanifest","about-banner.jpg"].forEach(function(name){var url=new URL(name,document.baseURI).href;var ctrl=new AbortController();var timer=setTimeout(function(){ctrl.abort();},4000);fetch(url,{cache:"no-store",signal:ctrl.signal}).then(function(res){clearTimeout(timer);if(res&&res.ok)return cache.put(url,res);}).catch(function(){clearTimeout(timer);});});}).catch(function(){});},1200);});
   (function(){function editable(t){return t&&t.closest&&t.closest("input,textarea,[contenteditable=true]");}function block(e){if(!editable(e.target))e.preventDefault();}document.addEventListener("selectstart",block);document.addEventListener("copy",block);document.addEventListener("cut",block);document.addEventListener("contextmenu",block);})();</script>
   <link rel="manifest" href="manifest.webmanifest" />
   <link rel="apple-touch-icon" href="apple-touch-icon.png" />
@@ -245,6 +246,17 @@
     .about-cta button, .about-cta a { flex: 1; height: 3rem; display: inline-flex; align-items: center; justify-content: center; gap: 0.4rem; border: 0; border-radius: 999px; font: inherit; font-size: 0.875rem; font-weight: 600; }
     .about-cta .share { background: var(--surface-2); color: var(--ink); }
     .about-cta .home { background: var(--primary); color: var(--primary-fg); }
+    .feedback { width: 100%; text-align: left; }
+    .feedback p { margin: 0 0 0.85rem; font-size: 0.875rem; line-height: 1.8; color: var(--muted); }
+    .feedback-open, .feedback-send { width: 100%; height: 3rem; border: 0; border-radius: 999px; font: inherit; font-size: 0.875rem; font-weight: 600; }
+    .feedback-open { background: var(--surface); color: var(--ink); box-shadow: var(--shadow); }
+    .feedback textarea { width: 100%; min-height: 7rem; resize: none; border: 1px solid color-mix(in oklab, var(--border) 80%, transparent); border-radius: 1rem; background: var(--surface); color: var(--ink); box-shadow: var(--shadow); padding: 0.85rem 1rem; font: inherit; font-size: 0.875rem; line-height: 1.8; }
+    .feedback textarea:focus { outline: 2px solid color-mix(in oklab, var(--primary) 45%, transparent); outline-offset: 1px; }
+    .feedback-actions { display: flex; gap: 0.75rem; margin-top: 0.75rem; }
+    .feedback-actions button { flex: 1; height: 3rem; border: 0; border-radius: 999px; font: inherit; font-size: 0.875rem; font-weight: 600; }
+    .feedback-cancel { background: var(--surface-2); color: var(--ink); }
+    .feedback-send { background: var(--primary); color: var(--primary-fg); }
+    .feedback-note { margin: 0.65rem 0 0; font-size: 0.875rem; color: var(--muted); }
     .hint { margin: 0.25rem 0 0; font-size: 0.875rem; color: var(--muted); }
     .actions { display: flex; gap: 0.5rem; }
     .btn { display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; height: 2.25rem; padding: 0 0.75rem; border: 1px solid var(--border); border-radius: 0.5rem; font-size: 0.875rem; font-weight: 500; background: var(--surface); color: var(--ink); box-shadow: var(--shadow); }
@@ -611,6 +623,19 @@
         <li><span class="emo">🌐</span><div><b>離線使用</b><span>採用 PWA 技術，沒有網絡也能照常運算。</span></div></li>
         <li><span class="emo">🌙</span><div><b>深色模式</b><span>支援淺色／深色主題，呵護雙眼。</span></div></li>
       </ul>
+    </section>
+    <section class="about-section feedback">
+      <h2 class="about-h">提供意見</h2>
+      <p>寫低短評，會用電郵寄出。唔使上網都可以開電郵程式。</p>
+      <button type="button" class="feedback-open" id="feedback-open">提供意見</button>
+      <form id="feedback-form" hidden>
+        <textarea id="feedback-text" maxlength="500" placeholder="有咩想講？" aria-label="意見內容"></textarea>
+        <div class="feedback-actions">
+          <button type="button" class="feedback-cancel" id="feedback-cancel">取消</button>
+          <button type="submit" class="feedback-send">送出</button>
+        </div>
+        <p class="feedback-note" id="feedback-note" hidden></p>
+      </form>
     </section>
     <footer class="about-end">
       <div class="about-powered">
@@ -1421,6 +1446,34 @@
       }
       document.querySelectorAll("[data-share]").forEach(function (btn) {
         btn.addEventListener("click", function () { shareFrom(btn); });
+      });
+      var feedbackOpen = document.getElementById("feedback-open");
+      var feedbackForm = document.getElementById("feedback-form");
+      var feedbackText = document.getElementById("feedback-text");
+      var feedbackNote = document.getElementById("feedback-note");
+      function showFeedbackNote(text) {
+        feedbackNote.hidden = !text;
+        feedbackNote.textContent = text || "";
+      }
+      feedbackOpen.addEventListener("click", function () {
+        feedbackOpen.hidden = true;
+        feedbackForm.hidden = false;
+        feedbackText.focus();
+      });
+      document.getElementById("feedback-cancel").addEventListener("click", function () {
+        feedbackForm.hidden = true;
+        feedbackOpen.hidden = false;
+        showFeedbackNote("");
+      });
+      feedbackForm.addEventListener("submit", function (event) {
+        event.preventDefault();
+        var text = feedbackText.value.trim();
+        if (!text) {
+          showFeedbackNote("請先寫低意見。");
+          return;
+        }
+        location.href = "mailto:nova0818@gmail.com?subject=" + encodeURIComponent("郵票計數機意見") + "&body=" + encodeURIComponent(text);
+        showFeedbackNote("已開啟電郵程式，請按發送。");
       });
     })();
     showPage(pageFromHash());

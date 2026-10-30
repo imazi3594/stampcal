@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "@tanstack/react-router";
-import { ArrowLeft, Share } from "lucide-react";
+import { ArrowLeft, MessageSquare, Share } from "lucide-react";
 import { loadSaved } from "@/lib/stamp-settings";
 import { applyCrisis, applySolveMode } from "@/lib/theme";
 
@@ -13,6 +13,9 @@ const FEATURES = [
 
 export function AboutPage() {
   const [copied, setCopied] = useState(false);
+  const [feedbackOpen, setFeedbackOpen] = useState(false);
+  const [feedback, setFeedback] = useState("");
+  const [feedbackNote, setFeedbackNote] = useState("");
 
   useEffect(() => {
     const saved = loadSaved();
@@ -33,6 +36,17 @@ export function AboutPage() {
     } catch {
       /* user cancelled */
     }
+  }
+
+  function sendFeedback() {
+    const text = feedback.trim();
+    if (!text) {
+      setFeedbackNote("請先寫低意見。");
+      return;
+    }
+    const href = `mailto:nova0818@gmail.com?subject=${encodeURIComponent("郵票計數機意見")}&body=${encodeURIComponent(text)}`;
+    window.location.href = href;
+    setFeedbackNote("已開啟電郵程式，請按發送。");
   }
 
   return (
@@ -113,6 +127,61 @@ export function AboutPage() {
             </li>
           ))}
         </ul>
+      </section>
+
+      <section className="stagger-in" style={{ animationDelay: "200ms" }}>
+        <SectionTitle>提供意見</SectionTitle>
+        <p className="mt-5 text-sm leading-[1.8] text-muted">寫低短評，會用電郵寄出。唔使上網都可以開電郵程式。</p>
+        {feedbackOpen ? (
+          <form
+            className="mt-4 flex flex-col gap-3"
+            onSubmit={(event) => {
+              event.preventDefault();
+              sendFeedback();
+            }}
+          >
+            <textarea
+              value={feedback}
+              maxLength={500}
+              rows={4}
+              placeholder="有咩想講？"
+              aria-label="意見內容"
+              onChange={(event) => {
+                setFeedback(event.target.value);
+                if (feedbackNote) setFeedbackNote("");
+              }}
+              className="w-full resize-none rounded-2xl border border-border/80 bg-surface px-4 py-3 text-sm leading-[1.8] text-ink shadow-(--shadow-border) outline-none placeholder:text-subtle"
+            />
+            <div className="flex gap-3">
+              <button
+                type="button"
+                onClick={() => {
+                  setFeedbackOpen(false);
+                  setFeedbackNote("");
+                }}
+                className="inline-flex h-12 flex-1 items-center justify-center rounded-full bg-surface-2 text-sm font-semibold text-ink"
+              >
+                取消
+              </button>
+              <button
+                type="submit"
+                className="inline-flex h-12 flex-1 items-center justify-center rounded-full bg-primary text-sm font-semibold text-primary-fg"
+              >
+                送出
+              </button>
+            </div>
+            {feedbackNote ? <p className="text-sm text-muted">{feedbackNote}</p> : null}
+          </form>
+        ) : (
+          <button
+            type="button"
+            onClick={() => setFeedbackOpen(true)}
+            className="mt-4 inline-flex h-12 w-full items-center justify-center gap-2 rounded-full bg-surface text-sm font-semibold text-ink shadow-(--shadow-border)"
+          >
+            <MessageSquare className="size-4" aria-hidden />
+            提供意見
+          </button>
+        )}
       </section>
 
       <footer className="stagger-in flex flex-col items-center gap-4 pb-6 text-center" style={{ animationDelay: "250ms" }}>
