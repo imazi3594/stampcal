@@ -1431,12 +1431,13 @@
     (function setupShare() {
       async function shareFrom(btn) {
         const url = location.origin + location.pathname;
+        const shareText = "郵票組合計數機\n" + url;
         try {
           if (navigator.share) {
-            await navigator.share({ title: "郵票組合計數機", text: "香港郵票組合計數機", url });
+            await navigator.share({ text: shareText });
             return;
           }
-          await navigator.clipboard.writeText(url);
+          await navigator.clipboard.writeText(shareText);
           if (!btn || btn.classList.contains("icon-btn")) return;
           const prev = btn.childNodes[btn.childNodes.length - 1];
           const old = prev && prev.textContent;

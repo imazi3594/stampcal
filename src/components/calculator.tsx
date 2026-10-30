@@ -174,12 +174,13 @@ export function StampCalculator() {
 
   async function shareApp() {
     const url = `${window.location.origin}${window.location.pathname}`;
+    const shareText = `郵票組合計數機\n${url}`;
     try {
       if (navigator.share) {
-        await navigator.share({ title: "郵票組合計數機", text: "香港郵票組合計數機", url });
+        await navigator.share({ text: shareText });
         return;
       }
-      await navigator.clipboard.writeText(url);
+      await navigator.clipboard.writeText(shareText);
     } catch {
       /* user cancelled */
     }
